@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import logo from "../icons/todoist.png";
 import LoginImage from "../images/login.jpg";
@@ -56,11 +57,11 @@ export default function LoginPage() {
               >
                 Email
               </label>
-              <input
+              <Input
                 id="email"
                 type="email"
                 placeholder="Enter your email..."
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full"
               />
             </div>
             <div className="relative">
@@ -70,19 +71,20 @@ export default function LoginPage() {
               >
                 Password
               </label>
-              <input
+              <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter your password..."
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary pr-10"
+                className="w-full pr-10"
               />
-              <button
+              <Button
                 type="button"
+                variant="ghost"
                 onClick={() => setShowPassword((v) => !v)}
-                className="absolute right-2 top-8 text-gray-500 focus:outline-none"
+                className="absolute right-2 top-8 text-gray-500 focus:outline-none px-2 py-1 h-auto"
               >
                 {showPassword ? "🙈" : "👁️"}
-              </button>
+              </Button>
             </div>
             <Button
               type="submit"
@@ -119,8 +121,12 @@ export default function LoginPage() {
             </a>
           </div>
         </div>
-        <div className="hidden md:flex w-1/2 items-center justify-center">
-          <Image src={LoginImage} alt="Devices" className="w-96 max-w-full" />
+        <div className="hidden md:block w-1/2">
+          <Image
+            src={LoginImage}
+            alt="Login Illustration"
+            className="w-full h-auto object-cover rounded-2xl shadow-lg"
+          />
         </div>
       </div>
     </div>

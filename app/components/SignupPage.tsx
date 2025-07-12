@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import logo from "../icons/todoist.png";
 import SignupImage from "../images/signup.jpg";
@@ -12,11 +13,7 @@ export default function SignupPage() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-white">
       <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-4xl mx-auto">
         <div className="w-full md:w-1/2 flex flex-col items-center md:items-start px-4 md:px-12">
-          <Image
-            src={logo}
-            alt="Todoist Logo"
-            className="w-32"
-          />
+          <Image src={logo} alt="Todoist Logo" className="w-32" />
           <h1 className="text-3xl font-bold mb-6 text-gray-900 w-full">
             Sign up
           </h1>
@@ -49,11 +46,11 @@ export default function SignupPage() {
               >
                 Email
               </label>
-              <input
+              <Input
                 id="email"
                 type="email"
                 placeholder="Enter your personal or work email..."
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full"
               />
             </div>
             <div className="relative">
@@ -63,19 +60,20 @@ export default function SignupPage() {
               >
                 Password
               </label>
-              <input
+              <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter your password..."
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary pr-10"
+                className="w-full pr-10"
               />
-              <button
+              <Button
                 type="button"
                 onClick={() => setShowPassword((v) => !v)}
-                className="absolute right-2 top-8 text-gray-500 focus:outline-none"
+                className="absolute right-2 top-8 text-gray-500 focus:outline-none px-2 py-1 h-auto"
+                variant="ghost"
               >
                 {showPassword ? "🙈" : "👁️"}
-              </button>
+              </Button>
             </div>
             <Button
               type="submit"

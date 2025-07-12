@@ -1,10 +1,21 @@
 "use client";
 import Sidebar from "../today/Sidebar";
-import { useTaskStore } from "../store/useTaskStore";
+import { TaskState, useTaskStore } from "../store/useTaskStore";
+import AddTaskModal from "../today/AddTask/AddTaskModal";
+import { Button } from "@/components/ui/button";
 
 function InboxMain() {
   const tasks = useTaskStore((state) =>
     state.tasks.filter((task) => task.tab === "inbox")
+  );
+  const showAddTask = useTaskStore(
+    (state: TaskState) => state.isCreateTaskModalOpen
+  );
+  const openCreateTaskModal = useTaskStore(
+    (state: TaskState) => state.openCreateTaskModal
+  );
+  const closeCreateTaskModal = useTaskStore(
+    (state: TaskState) => state.closeCreateTaskModal
   );
   return (
     <div className="w-full max-w-3xl mx-auto flex flex-col items-center justify-center h-full">
@@ -13,9 +24,12 @@ function InboxMain() {
           <h2 className="text-2xl font-bold text-gray-900 mb-1">Inbox</h2>
           <div className="text-sm text-gray-500">All unsorted tasks</div>
         </div>
-        <button className="flex items-center gap-1 text-[#db4c3f] font-medium text-base hover:underline">
+        <Button
+          className="flex items-center gap-1 text-[#db4c3f] font-medium text-base bg-amber-50 hover:none hover:bg-amber-50"
+          onClick={openCreateTaskModal}
+        >
           <span className="text-xl">＋</span> Add task
-        </button>
+        </Button>
       </div>
       <div className="w-full flex flex-col gap-4">
         {tasks.length === 0 ? (
@@ -34,6 +48,11 @@ function InboxMain() {
           ))
         )}
       </div>
+      {showAddTask && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20">
+          <AddTaskModal open={showAddTask} onClose={closeCreateTaskModal} />
+        </div>
+      )}
     </div>
   );
 }

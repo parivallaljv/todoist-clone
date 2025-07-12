@@ -70,7 +70,7 @@ export default function Navbar() {
             onMouseEnter={() => setOpenDropdown("madefor")}
             onMouseLeave={() => setOpenDropdown(null)}
           >
-            <button
+            <Button
               className={`flex items-center gap-1 px-2 py-1 rounded transition ${
                 openDropdown === "madefor" ? "bg-gray-100" : ""
               }`}
@@ -89,7 +89,7 @@ export default function Navbar() {
                   strokeLinejoin="round"
                 />
               </svg>
-            </button>
+            </Button>
             {openDropdown === "madefor" && (
               <div className="absolute left-0 mt-2 w-64 bg-white rounded-xl shadow-lg py-3 z-50 animate-fadeIn">
                 {madeForItems.map((item, idx) => (
@@ -111,7 +111,7 @@ export default function Navbar() {
             onMouseEnter={() => setOpenDropdown("resources")}
             onMouseLeave={() => setOpenDropdown(null)}
           >
-            <button
+            <Button
               className={`flex items-center gap-1 px-2 py-1 rounded transition ${
                 openDropdown === "resources" ? "bg-gray-100" : ""
               }`}
@@ -130,7 +130,7 @@ export default function Navbar() {
                   strokeLinejoin="round"
                 />
               </svg>
-            </button>
+            </Button>
             {openDropdown === "resources" && (
               <div className="absolute left-0 mt-2 w-72 bg-white rounded-xl shadow-lg py-3 z-50 animate-fadeIn">
                 {resourcesItems.map((item, idx) => (

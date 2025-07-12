@@ -1,10 +1,21 @@
 "use client";
 import React from "react";
-import { useTaskStore } from "../store/useTaskStore";
+import { TaskState, useTaskStore } from "../store/useTaskStore";
+import AddTaskModal from "./AddTask/AddTaskModal";
+import { Button } from "@/components/ui/button";
 
 export default function TodayMain() {
   const tasks = useTaskStore((state) =>
     state.tasks.filter((task) => task.tab === "today")
+  );
+  const showAddTask = useTaskStore(
+    (state: TaskState) => state.isCreateTaskModalOpen
+  );
+  const openCreateTaskModal = useTaskStore(
+    (state: TaskState) => state.openCreateTaskModal
+  );
+  const closeCreateTaskModal = useTaskStore(
+    (state: TaskState) => state.closeCreateTaskModal
   );
   return (
     <div className="w-full max-w-3xl mx-auto flex flex-col items-center justify-center h-full">
@@ -16,9 +27,12 @@ export default function TodayMain() {
             <span className="text-gray-400">{tasks.length}</span>
           </div>
         </div>
-        <button className="flex items-center gap-1 text-[#db4c3f] font-medium text-base hover:underline">
+        <Button
+          className="flex items-center gap-1 text-[#db4c3f] font-medium text-base hover:none bg-amber-50 hover:bg-amber-50"
+          onClick={openCreateTaskModal}
+        >
           <span className="text-xl">＋</span> Add task
-        </button>
+        </Button>
       </div>
       <div className="w-full flex flex-col gap-4">
         {tasks.length === 0 ? (
@@ -37,6 +51,11 @@ export default function TodayMain() {
           ))
         )}
       </div>
+      {showAddTask && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20">
+          <AddTaskModal open={showAddTask} onClose={closeCreateTaskModal} />
+        </div>
+      )}
     </div>
   );
 }

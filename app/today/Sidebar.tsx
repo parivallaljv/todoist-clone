@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import SidebarNavLink from "./SidebarNavLink";
 import SidebarProjects from "./SidebarProjects";
-import AddTaskModal from "./AddTaskModal";
+import AddTaskModal from "./AddTask/AddTaskModal";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTaskStore } from "../store/useTaskStore";
 import type { TaskState } from "../store/useTaskStore";
+import { useSearchModal } from "../components/SearchModalContext";
 
 const navLinks = [
   { icon: "➕", label: "Add task", id: "add-task", href: undefined },
@@ -35,6 +36,7 @@ export default function Sidebar() {
     (state: TaskState) => state.closeCreateTaskModal
   );
   const pathname = usePathname();
+  const { setSearchModalOpen } = useSearchModal();
 
   return (
     <aside className="w-64 bg-[#fcfbf7] border-r border-gray-200 flex flex-col min-h-screen p-4">
@@ -55,6 +57,19 @@ export default function Sidebar() {
                 count={link.count}
                 active={false}
                 onClick={openCreateTaskModal}
+              />
+            );
+          }
+          if (link.id === "search") {
+            return (
+              <SidebarNavLink
+                key={link.id}
+                icon={link.icon}
+                label={link.label}
+                count={link.count}
+                active={pathname === link.href}
+                onClick={() => setSearchModalOpen(true)}
+                style={{ textDecoration: "none" }}
               />
             );
           }
@@ -80,7 +95,7 @@ export default function Sidebar() {
       {/* Add Task Modal */}
       {showAddTask && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20">
-          <AddTaskModal onClose={closeCreateTaskModal} />
+          <AddTaskModal open={showAddTask} onClose={closeCreateTaskModal} />
         </div>
       )}
     </aside>

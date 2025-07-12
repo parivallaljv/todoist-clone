@@ -1,4 +1,5 @@
 import Sidebar from "../today/Sidebar";
+import { Input } from "@/components/ui/input";
 
 function SearchMain() {
   return (
@@ -9,10 +10,7 @@ function SearchMain() {
           <div className="text-sm text-gray-500">Find your tasks</div>
         </div>
       </div>
-      <input
-        className="w-full max-w-md px-4 py-2 border rounded-md mb-6 focus:outline-none focus:ring-2 focus:ring-[#db4c3f]"
-        placeholder="Search tasks..."
-      />
+      <Input className="w-full max-w-md mb-6" placeholder="Search tasks..." />
       <div className="w-full flex flex-col gap-4">
         <div className="bg-white rounded-lg shadow p-4 flex items-center justify-between">
           <span className="text-gray-800">Buy groceries</span>

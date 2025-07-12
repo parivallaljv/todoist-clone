@@ -2,6 +2,7 @@
 
 import Sidebar from "../today/Sidebar";
 import { useTaskStore } from "../store/useTaskStore";
+import { Button } from "@/components/ui/button";
 
 const LABEL_OPTIONS = [
   { key: "work", label: "Work", symbol: "💼" },
@@ -23,9 +24,9 @@ function FiltersLabelsMain() {
           </h2>
           <div className="text-sm text-gray-500">Organize your tasks</div>
         </div>
-        <button className="flex items-center gap-1 text-[#db4c3f] font-medium text-base hover:underline">
+        <Button className="flex items-center gap-1 text-[#db4c3f] font-medium text-base hover:underline">
           <span className="text-xl">＋</span> Add filter/label
-        </button>
+        </Button>
       </div>
       <div className="w-full flex flex-col gap-4">
         {tasks.length === 0 ? (
