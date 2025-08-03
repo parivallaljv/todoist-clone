@@ -1,5 +1,5 @@
 import React from "react";
-import { X } from "lucide-react";
+import { X } from "react-feather";
 import { format } from "date-fns";
 
 export function DateTag({
@@ -10,12 +10,13 @@ export function DateTag({
   onClear: () => void;
 }) {
   return (
-    <div className="mb-2 flex items-center gap-2">
-      <span className="bg-[#fbeee6] text-[#db4c3f] rounded-full px-3 py-1 text-xs font-medium flex items-end">
+    <div className="flex items-center gap-2">
+      <span className="flex items-end rounded-xs bg-[#fbeee6] px-3 py-1 text-xs font-medium text-[#db4c3f]">
         {format(date, "MMM d")}
         <X
           size={14}
-          className="pl-2 box-content cursor-pointer"
+          color="#db4c3f"
+          className="box-content cursor-pointer pl-2"
           onClick={onClear}
         />
       </span>

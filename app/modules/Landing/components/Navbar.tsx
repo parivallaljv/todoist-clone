@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   CheckCircle,
-  ClipboardList,
+  Clipboard,
   Clock,
   Repeat,
   Users,
@@ -11,59 +11,81 @@ import {
   Layers,
   Zap,
   HelpCircle,
-  Lightbulb,
+  Award,
   Download,
-} from "lucide-react";
+  ChevronDown,
+} from "react-feather";
 
 const madeForItems = [
-  { icon: <CheckCircle className="w-5 h-5 mr-2" />, label: "Task Management" },
   {
-    icon: <ClipboardList className="w-5 h-5 mr-2" />,
+    icon: <CheckCircle color="#db4c3f" className="mr-2 h-5 w-5" />,
+    label: "Task Management",
+  },
+  {
+    icon: <Clipboard color="#db4c3f" className="mr-2 h-5 w-5" />,
     label: "Project Management",
   },
-  { icon: <Clock className="w-5 h-5 mr-2" />, label: "Time Management" },
-  { icon: <Repeat className="w-5 h-5 mr-2" />, label: "Habit Forming" },
-  { icon: <Users className="w-5 h-5 mr-2" />, label: "Teamwork" },
+  {
+    icon: <Clock color="#db4c3f" className="mr-2 h-5 w-5" />,
+    label: "Time Management",
+  },
+  {
+    icon: <Repeat color="#db4c3f" className="mr-2 h-5 w-5" />,
+    label: "Habit Forming",
+  },
+  {
+    icon: <Users color="#db4c3f" className="mr-2 h-5 w-5" />,
+    label: "Teamwork",
+  },
 ];
 
 const resourcesItems = [
-  { icon: <Puzzle className="w-5 h-5 mr-2" />, label: "Integrations" },
-  { icon: <Layers className="w-5 h-5 mr-2" />, label: "Templates" },
-  { icon: <Zap className="w-5 h-5 mr-2" />, label: "Getting Started" },
-  { icon: <HelpCircle className="w-5 h-5 mr-2" />, label: "Help Center" },
   {
-    icon: <Lightbulb className="w-5 h-5 mr-2" />,
+    icon: <Puzzle color="#db4c3f" className="mr-2 h-5 w-5" />,
+    label: "Integrations",
+  },
+  {
+    icon: <Layers color="#db4c3f" className="mr-2 h-5 w-5" />,
+    label: "Templates",
+  },
+  {
+    icon: <Zap color="#db4c3f" className="mr-2 h-5 w-5" />,
+    label: "Getting Started",
+  },
+  {
+    icon: <HelpCircle color="#db4c3f" className="mr-2 h-5 w-5" />,
+    label: "Help Center",
+  },
+  {
+    icon: <Award color="#db4c3f" className="mr-2 h-5 w-5" />,
     label: "Productivity Methods + Quiz",
   },
-  { icon: <Lightbulb className="w-5 h-5 mr-2" />, label: "Inspiration Hub" },
-  { icon: <Download className="w-5 h-5 mr-2" />, label: "Downloads" },
+  {
+    icon: <Award color="#db4c3f" className="mr-2 h-5 w-5" />,
+    label: "Inspiration Hub",
+  },
+  {
+    icon: <Download color="#db4c3f" className="mr-2 h-5 w-5" />,
+    label: "Downloads",
+  },
 ];
 
 export default function Navbar() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   return (
-    <nav className="w-full flex items-center justify-between py-3 px-6 md:px-16 bg-white shadow-sm fixed z-50">
+    <nav className="fixed z-50 flex w-full items-center justify-between bg-white px-6 py-3 shadow-sm md:px-16">
       {/* Logo */}
       <div className="flex items-center space-x-2">
-        <span className="bg-red-500 w-10 h-10 rounded flex items-center justify-center">
-          {/* SVG logo */}
-          <svg width="28" height="28" fill="none" viewBox="0 0 24 24">
-            <rect width="24" height="24" rx="6" fill="#fff" />
-            <path
-              d="M7 8h10M7 12h10M7 16h10"
-              stroke="#EA4B2A"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
+        <span className="flex h-10 w-10 items-center justify-center rounded border border-[#db4c3f] bg-white">
+          <CheckCircle size={28} color="#db4c3f" />
         </span>
         <span className="text-2xl font-bold text-[#EA4B2A]">todoist</span>
       </div>
 
       {/* Menu */}
       <div className="flex items-center space-x-8">
-        <div className="hidden md:flex items-center space-x-6 text-gray-800 font-medium">
+        <div className="hidden items-center space-x-6 font-medium text-gray-800 md:flex">
           {/* Made For Dropdown */}
           <div
             className="relative"
@@ -71,32 +93,20 @@ export default function Navbar() {
             onMouseLeave={() => setOpenDropdown(null)}
           >
             <Button
-              className={`flex items-center gap-1 px-2 py-1 rounded transition ${
+              className={`flex items-center gap-1 rounded px-2 py-1 transition ${
                 openDropdown === "madefor" ? "bg-gray-100" : ""
               }`}
             >
               Made For
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M19 9l-7 7-7-7"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              <ChevronDown color="#db4c3f" className="h-4 w-4" />
             </Button>
             {openDropdown === "madefor" && (
-              <div className="absolute left-0 mt-2 w-64 bg-white rounded-xl shadow-lg py-3 z-50 animate-fadeIn">
+              <div className="animate-fadeIn absolute left-0 z-50 mt-2 w-64 rounded-xl bg-white py-3 shadow-lg">
                 {madeForItems.map((item, idx) => (
                   <a
                     key={idx}
                     href="#"
-                    className="flex items-center px-5 py-2 hover:bg-gray-100 transition"
+                    className="flex items-center px-5 py-2 transition hover:bg-gray-100"
                   >
                     {item.icon}
                     <span>{item.label}</span>
@@ -112,32 +122,20 @@ export default function Navbar() {
             onMouseLeave={() => setOpenDropdown(null)}
           >
             <Button
-              className={`flex items-center gap-1 px-2 py-1 rounded transition ${
+              className={`flex items-center gap-1 rounded px-2 py-1 transition ${
                 openDropdown === "resources" ? "bg-gray-100" : ""
               }`}
             >
               Resources
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M19 9l-7 7-7-7"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              <ChevronDown color="#db4c3f" className="h-4 w-4" />
             </Button>
             {openDropdown === "resources" && (
-              <div className="absolute left-0 mt-2 w-72 bg-white rounded-xl shadow-lg py-3 z-50 animate-fadeIn">
+              <div className="animate-fadeIn absolute left-0 z-50 mt-2 w-72 rounded-xl bg-white py-3 shadow-lg">
                 {resourcesItems.map((item, idx) => (
                   <a
                     key={idx}
                     href="#"
-                    className="flex items-center px-5 py-2 hover:bg-gray-100 transition"
+                    className="flex items-center px-5 py-2 transition hover:bg-gray-100"
                   >
                     {item.icon}
                     <span>{item.label}</span>
@@ -146,15 +144,15 @@ export default function Navbar() {
               </div>
             )}
           </div>
-          <a href="#" className="hover:text-[#EA4B2A] transition">
+          <a href="#" className="transition hover:text-[#EA4B2A]">
             Pricing
           </a>
           <span className="mx-2 text-gray-300">|</span>
-          <a href="login" className="hover:text-[#EA4B2A] transition">
+          <a href="login" className="transition hover:text-[#EA4B2A]">
             Log in
           </a>
         </div>
-        <Button className="bg-[#EA4B2A] hover:bg-[#d13b1f] text-white px-6 py-2 rounded-lg text-base font-semibold shadow transition-all">
+        <Button className="rounded-lg bg-[#EA4B2A] px-6 py-2 text-base font-semibold text-white shadow transition-all hover:bg-[#d13b1f]">
           Start for free
         </Button>
       </div>

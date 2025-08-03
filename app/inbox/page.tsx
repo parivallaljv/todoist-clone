@@ -3,42 +3,50 @@ import Sidebar from "../today/Sidebar";
 import { TaskState, useTaskStore } from "../store/useTaskStore";
 import AddTaskModal from "../today/AddTask/AddTaskModal";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { TaskDetailsModal } from "../today/components/TaskDetailsModal";
 
 function InboxMain() {
   const tasks = useTaskStore((state) =>
-    state.tasks.filter((task) => task.tab === "inbox")
+    state.tasks.filter((task) => task.tab === "inbox"),
   );
   const showAddTask = useTaskStore(
-    (state: TaskState) => state.isCreateTaskModalOpen
+    (state: TaskState) => state.isCreateTaskModalOpen,
   );
   const openCreateTaskModal = useTaskStore(
-    (state: TaskState) => state.openCreateTaskModal
+    (state: TaskState) => state.openCreateTaskModal,
   );
   const closeCreateTaskModal = useTaskStore(
-    (state: TaskState) => state.closeCreateTaskModal
+    (state: TaskState) => state.closeCreateTaskModal,
   );
+  const [selectedTask, setSelectedTask] = useState<any>(null);
+  const [showTaskModal, setShowTaskModal] = useState(false);
   return (
-    <div className="w-full max-w-3xl mx-auto flex flex-col items-center justify-center h-full">
-      <div className="w-full flex items-center justify-between mb-8">
+    <div className="mx-auto mt-10 flex w-full max-w-3xl flex-col items-center justify-center">
+      <div className="mb-8 flex w-full items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-1">Inbox</h2>
+          <h2 className="mb-1 text-2xl font-bold text-gray-900">Inbox</h2>
           <div className="text-sm text-gray-500">All unsorted tasks</div>
         </div>
         <Button
-          className="flex items-center gap-1 text-[#db4c3f] font-medium text-base bg-amber-50 hover:none hover:bg-amber-50"
+          className="hover:none flex items-center gap-1 bg-amber-50 text-base font-medium text-[#db4c3f] hover:bg-amber-50"
           onClick={openCreateTaskModal}
         >
           <span className="text-xl">＋</span> Add task
         </Button>
       </div>
-      <div className="w-full flex flex-col gap-4">
+      <div className="flex w-full flex-col gap-4">
         {tasks.length === 0 ? (
-          <div className="text-gray-400 text-center">No tasks in Inbox</div>
+          <div className="text-center text-gray-400">No tasks in Inbox</div>
         ) : (
           tasks.map((task) => (
             <div
               key={task.id}
-              className="bg-white rounded-lg shadow p-4 flex items-center justify-between"
+              className="flex cursor-pointer items-center justify-between rounded-lg bg-white p-4 shadow"
+              onClick={() => {
+                setSelectedTask(task);
+                setShowTaskModal(true);
+              }}
             >
               <span className="text-gray-800">{task.title}</span>
               <span className="text-xs text-gray-400">
@@ -53,6 +61,11 @@ function InboxMain() {
           <AddTaskModal open={showAddTask} onClose={closeCreateTaskModal} />
         </div>
       )}
+      <TaskDetailsModal
+        task={selectedTask}
+        open={showTaskModal}
+        onClose={() => setShowTaskModal(false)}
+      />
     </div>
   );
 }
@@ -61,7 +74,7 @@ export default function InboxPage() {
   return (
     <div className="flex min-h-screen bg-[#fcfbf7]">
       <Sidebar />
-      <main className="flex-1 flex flex-col items-center justify-start p-8">
+      <main className="flex flex-1 flex-col items-center justify-start p-8">
         <InboxMain />
       </main>
     </div>

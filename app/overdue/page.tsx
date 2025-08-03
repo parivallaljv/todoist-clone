@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { TaskDetailsModal } from "../today/components/TaskDetailsModal";
 
-function UpcomingMain() {
+function OverdueMain() {
   const tasks = useTaskStore((state) =>
-    state.tasks.filter((task) => task.tab === "upcoming"),
+    state.tasks.filter((task) => task.tab === "overdue"),
   );
   const showAddTask = useTaskStore(
     (state: TaskState) => state.isCreateTaskModalOpen,
@@ -25,8 +25,8 @@ function UpcomingMain() {
     <div className="mx-auto mt-10 flex w-full max-w-3xl flex-col items-center justify-center">
       <div className="mb-8 flex w-full items-center justify-between">
         <div>
-          <h2 className="mb-1 text-2xl font-bold text-gray-900">Upcoming</h2>
-          <div className="text-sm text-gray-500">See what's next</div>
+          <h2 className="mb-1 text-2xl font-bold text-gray-900">Overdue</h2>
+          <div className="text-sm text-gray-500">Tasks with past due dates</div>
         </div>
         <Button
           className="hover:none flex items-center gap-1 bg-amber-50 text-base font-medium text-[#db4c3f] hover:bg-amber-50"
@@ -37,21 +37,21 @@ function UpcomingMain() {
       </div>
       <div className="flex w-full flex-col gap-4">
         {tasks.length === 0 ? (
-          <div className="text-center text-gray-400">No upcoming tasks</div>
+          <div className="text-center text-gray-400">No overdue tasks</div>
         ) : (
           tasks.map((task) => (
             <div
               key={task.id}
-              className="flex cursor-pointer flex-col rounded-lg bg-white p-4 shadow"
+              className="flex cursor-pointer items-center justify-between rounded-lg bg-white p-4 shadow"
               onClick={() => {
                 setSelectedTask(task);
                 setShowTaskModal(true);
               }}
             >
-              <span className="mb-1 font-semibold text-gray-800">
+              <span className="text-gray-800">{task.title}</span>
+              <span className="text-xs text-gray-400">
                 {task.date ? new Date(task.date).toLocaleDateString() : ""}
               </span>
-              <span className="text-gray-700">{task.title}</span>
             </div>
           ))
         )}
@@ -70,12 +70,12 @@ function UpcomingMain() {
   );
 }
 
-export default function UpcomingPage() {
+export default function OverduePage() {
   return (
     <div className="flex min-h-screen bg-[#fcfbf7]">
       <Sidebar />
       <main className="flex flex-1 flex-col items-center justify-start p-8">
-        <UpcomingMain />
+        <OverdueMain />
       </main>
     </div>
   );

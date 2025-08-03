@@ -1,48 +1,82 @@
-import React from 'react';
+import React from "react";
+import { CheckCircle } from "react-feather";
 
-const features = ['How It Works', 'For Teams', 'Pricing', 'Templates'];
-const resources = ['Download Apps', 'Help Center', 'Productivity Methods', 'Integrations', 'Channel Partners', 'Developer API', 'Status'];
-const company = ['About Us', 'Careers', 'Inspiration Hub', 'Press', 'Twist'];
+const features = ["How It Works", "For Teams", "Pricing", "Templates"];
+const resources = [
+  "Download Apps",
+  "Help Center",
+  "Productivity Methods",
+  "Integrations",
+  "Channel Partners",
+  "Developer API",
+  "Status",
+];
+const company = ["About Us", "Careers", "Inspiration Hub", "Press", "Twist"];
 
 export default function FooterSection() {
   return (
-    <footer className="bg-red-50 py-12 px-4 md:px-24 animate-fadeIn">
-      <div className="flex flex-col md:flex-row justify-between items-start gap-12">
+    <footer className="animate-fadeIn bg-red-50 px-4 py-12 md:px-24">
+      <div className="flex flex-col items-start justify-between gap-12 md:flex-row">
         <div>
-          <div className="flex items-center mb-4">
-            <span className="bg-red-500 w-8 h-8 rounded flex items-center justify-center mr-2">
-              <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="#fff"/><path d="M7 8h10M7 12h10M7 16h10" stroke="#EA4B2A" strokeWidth="2" strokeLinecap="round"/></svg>
+          <div className="mb-4 flex items-center">
+            <span className="mr-2 flex h-8 w-8 items-center justify-center rounded border border-[#db4c3f] bg-white">
+              <CheckCircle size={24} color="#db4c3f" />
             </span>
             <span className="text-2xl font-bold text-gray-900">todoist</span>
           </div>
-          <p className="text-gray-700 max-w-xs mb-4">Join millions of people who organize work and life with Todoist.</p>
+          <p className="mb-4 max-w-xs text-gray-700">
+            Join millions of people who organize work and life with Todoist.
+          </p>
         </div>
         <div className="flex flex-wrap gap-12">
           <div>
-            <h4 className="font-bold mb-2">Features</h4>
+            <h4 className="mb-2 font-bold">Features</h4>
             <ul>
-              {features.map((f, i) => <li key={i} className="text-gray-700 mb-1 hover:underline cursor-pointer">{f}</li>)}
+              {features.map((f, i) => (
+                <li
+                  key={i}
+                  className="mb-1 cursor-pointer text-gray-700 hover:underline"
+                >
+                  {f}
+                </li>
+              ))}
             </ul>
           </div>
           <div>
-            <h4 className="font-bold mb-2">Resources</h4>
+            <h4 className="mb-2 font-bold">Resources</h4>
             <ul>
-              {resources.map((r, i) => <li key={i} className="text-gray-700 mb-1 hover:underline cursor-pointer">{r}</li>)}
+              {resources.map((r, i) => (
+                <li
+                  key={i}
+                  className="mb-1 cursor-pointer text-gray-700 hover:underline"
+                >
+                  {r}
+                </li>
+              ))}
             </ul>
           </div>
           <div>
-            <h4 className="font-bold mb-2">Company</h4>
+            <h4 className="mb-2 font-bold">Company</h4>
             <ul>
-              {company.map((c, i) => <li key={i} className="text-gray-700 mb-1 hover:underline cursor-pointer">{c}</li>)}
+              {company.map((c, i) => (
+                <li
+                  key={i}
+                  className="mb-1 cursor-pointer text-gray-700 hover:underline"
+                >
+                  {c}
+                </li>
+              ))}
             </ul>
           </div>
         </div>
       </div>
-      <div className="text-center text-gray-400 text-sm mt-8">© Doist Inc. All rights reserved.</div>
+      <div className="mt-8 text-center text-sm text-gray-400">
+        © Doist Inc. All rights reserved.
+      </div>
     </footer>
   );
 }
 
 // Tailwind animation (add to globals.css or tailwind config if not present):
 // @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-// .animate-fadeIn { animation: fadeIn 1s ease-in; } 
+// .animate-fadeIn { animation: fadeIn 1s ease-in; }

@@ -129,12 +129,12 @@ h6 {
 }
 
 /* === ICON STYLES === */
-svg,
+
+.cal-overlay-icon:hover,
+.cal-overlay-icon:hover * {
+  stroke: white !important;
+}
 .icon {
-  color: #808080 !important; /* Use #db4c3f for active if needed */
-  fill: currentColor !important;
-  width: 1.25em;
-  height: 1.25em;
   vertical-align: middle;
 }
 .sidebar .active svg,
@@ -171,8 +171,6 @@ button,
 .btn {
   font-family: inherit;
   font-size: 11px;
-  border-radius: 8px;
-  padding: 0.5em 1.5em;
   border: none;
   cursor: pointer;
 }
@@ -262,4 +260,52 @@ button.secondary,
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* === Custom DayPicker Styles === */
+.custom-daypicker,
+.custom-daypicker .rdp,
+.custom-daypicker .rdp-month,
+.custom-daypicker .rdp-table {
+  max-width: 180px !important;
+  width: 180px !important;
+  min-width: 0 !important;
+  padding: 5px !important;
+  margin: 0 !important;
+  box-sizing: border-box;
+}
+.custom-daypicker .rdp-table {
+  border-spacing: 0 !important;
+  border-collapse: collapse !important;
+}
+.custom-daypicker .rdp-day {
+  height: 24px !important;
+  min-width: 24px !important;
+  max-width: 20px !important;
+  max-height: 20px !important;
+  font-size: 10px !important;
+  margin: 0 !important;
+  width: 22px;
+  height: 22px;
+}
+.custom-daypicker .rdp-head_cell,
+.custom-daypicker .rdp-caption_label {
+  padding: 2px 0 !important;
+  font-size: 12px !important;
+  height: 20px !important;
+}
+.custom-daypicker .rdp-row {
+  height: 24px !important;
+  margin: 0 !important;
+}
+.custom-daypicker .rdp-caption {
+  margin-bottom: 2px !important;
+  padding: 5px !important;
+}
+.rdp-day_button {
+  height: 20px !important;
+  width: 20px !important;
+}
+.rdp-nav {
+  height: 25px;
 }

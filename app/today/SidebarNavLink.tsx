@@ -34,7 +34,7 @@ export default function SidebarNavLink({
       </span>
       <span className="flex-1">{label}</span>
       {typeof count === "number" && (
-        <span className="ml-auto text-xs bg-gray-200 rounded px-2 py-0.5 font-semibold text-gray-600">
+        <span className="ml-auto text-xs rounded px-2 py-0.5 font-semibold text-gray-600">
           {count}
         </span>
       )}
