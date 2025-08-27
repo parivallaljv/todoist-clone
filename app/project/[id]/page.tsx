@@ -1,7 +1,7 @@
 // Moved from app/project/[id].tsx
 "use client";
 import { useState } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useTaskStore } from "../../store/useTaskStore";
 import { ICON_OPTIONS } from "../../today/Sidebar";
 import AddTaskModal from "../../today/AddTask/AddTaskModal";
@@ -13,7 +13,7 @@ export default function ProjectPage() {
   const { id } = useParams();
   const projects = useTaskStore((state) => state.projects);
   const tasks = useTaskStore((state) =>
-    state.tasks.filter((t) => t.tab === id),
+    state.tasks.filter((t) => t.projectId === id),
   );
   const project = projects.find((p) => p.id === id);
   const iconObj = project
@@ -24,7 +24,7 @@ export default function ProjectPage() {
     : null;
   const [showAddTask, setShowAddTask] = useState(false);
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
-  const [selectedTask, setSelectedTask] = useState<any>(null);
+  const setSelectedTask = useTaskStore((state) => state.setSelectedTask);
   const [showTaskModal, setShowTaskModal] = useState(false);
   const removeTask = useTaskStore(
     (state) => (taskId: string) =>
@@ -48,7 +48,7 @@ export default function ProjectPage() {
         </span>
         <h2 className="text-2xl font-bold text-gray-900">{project.name}</h2>
         <Button
-          className="ml-auto rounded bg-[#db4c3f] px-3 py-1 text-white hover:text-[#db4c3f]"
+          className="ml-auto rounded-3xl bg-[#db4c3f] px-3 py-1 text-white hover:bg-[#fbeee6] hover:text-[#db4c3f]"
           onClick={() => setShowAddTask(true)}
         >
           + Add Task
@@ -65,7 +65,7 @@ export default function ProjectPage() {
               key={task.id}
               className={`flex cursor-pointer items-center justify-between rounded-lg bg-white p-4 shadow ${completedTasks.includes(task.id) ? "line-through opacity-50" : ""}`}
               onClick={() => {
-                setSelectedTask(task);
+                setSelectedTask(task?.id);
                 setShowTaskModal(true);
               }}
             >
@@ -106,7 +106,7 @@ export default function ProjectPage() {
         </div>
       )}
       <TaskDetailsModal
-        task={selectedTask}
+        allTask={tasks}
         open={showTaskModal}
         onClose={() => setShowTaskModal(false)}
       />

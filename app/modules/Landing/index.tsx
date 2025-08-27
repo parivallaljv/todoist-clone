@@ -9,7 +9,7 @@ import {
 } from "./components";
 import Navbar from "./components/Navbar";
 
-export default function Home() {
+export default function Landing() {
   return (
     <main>
       <Navbar />

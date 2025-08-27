@@ -12,8 +12,8 @@ export function ButtonRow(props: any) {
     setPriority,
     reminder,
     setReminder,
-    labels,
-    setLabels,
+    label,
+    setLabel,
   } = props;
 
   return (
@@ -21,7 +21,7 @@ export function ButtonRow(props: any) {
       <DatePicker date={date} setDate={setDate} />
       <PriorityPicker priority={priority} setPriority={setPriority} />
       <ReminderPicker reminder={reminder} setReminder={setReminder} />
-      <LabelPicker labels={labels} setLabels={setLabels} />
+      <LabelPicker label={label} setLabel={setLabel} />
     </div>
   );
 }

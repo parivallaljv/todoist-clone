@@ -10,7 +10,7 @@ export function TitleInput({
 }) {
   return (
     <Input
-      className="w-full font-medium text-gray-700 placeholder-gray-400 bg-transparent border-0 shadow-none mb-1 focus:ring-0 focus:outline-none active:outline-none hover:border-0 focus:border-0 active:border-0"
+      className="mb-1 w-full border-0 bg-transparent font-medium text-gray-700 placeholder-gray-400 shadow-none hover:border-0 focus:border-0 focus:ring-0 focus:outline-none active:border-0 active:outline-none"
       placeholder="Practice math problems daily at 4pm"
       autoFocus
       value={value}

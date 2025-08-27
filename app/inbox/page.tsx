@@ -8,7 +8,7 @@ import { TaskDetailsModal } from "../today/components/TaskDetailsModal";
 
 function InboxMain() {
   const tasks = useTaskStore((state) =>
-    state.tasks.filter((task) => task.tab === "inbox"),
+    state.tasks.filter((task) => (task.projectId ?? "inbox") === "inbox"),
   );
   const showAddTask = useTaskStore(
     (state: TaskState) => state.isCreateTaskModalOpen,
@@ -19,8 +19,11 @@ function InboxMain() {
   const closeCreateTaskModal = useTaskStore(
     (state: TaskState) => state.closeCreateTaskModal,
   );
-  const [selectedTask, setSelectedTask] = useState<any>(null);
+  const setSelectedTask = useTaskStore((state) => state.setSelectedTask);
   const [showTaskModal, setShowTaskModal] = useState(false);
+
+  console.log(tasks, "tasks");
+
   return (
     <div className="mx-auto mt-10 flex w-full max-w-3xl flex-col items-center justify-center">
       <div className="mb-8 flex w-full items-center justify-between">
@@ -44,7 +47,7 @@ function InboxMain() {
               key={task.id}
               className="flex cursor-pointer items-center justify-between rounded-lg bg-white p-4 shadow"
               onClick={() => {
-                setSelectedTask(task);
+                setSelectedTask(task?.id);
                 setShowTaskModal(true);
               }}
             >
@@ -62,7 +65,7 @@ function InboxMain() {
         </div>
       )}
       <TaskDetailsModal
-        task={selectedTask}
+        allTask={tasks}
         open={showTaskModal}
         onClose={() => setShowTaskModal(false)}
       />

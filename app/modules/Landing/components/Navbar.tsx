@@ -1,13 +1,13 @@
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { PuzzleIcon } from "lucide-react";
 import {
   CheckCircle,
   Clipboard,
   Clock,
   Repeat,
   Users,
-  Puzzle,
   Layers,
   Zap,
   HelpCircle,
@@ -41,7 +41,7 @@ const madeForItems = [
 
 const resourcesItems = [
   {
-    icon: <Puzzle color="#db4c3f" className="mr-2 h-5 w-5" />,
+    icon: <PuzzleIcon color="#db4c3f" className="mr-2 h-5 w-5" />,
     label: "Integrations",
   },
   {
@@ -93,7 +93,7 @@ export default function Navbar() {
             onMouseLeave={() => setOpenDropdown(null)}
           >
             <Button
-              className={`flex items-center gap-1 rounded px-2 py-1 transition ${
+              className={`flex items-center gap-1 rounded px-2 py-1 text-gray-800 transition hover:text-[#EA4B2A]${
                 openDropdown === "madefor" ? "bg-gray-100" : ""
               }`}
             >
@@ -101,7 +101,7 @@ export default function Navbar() {
               <ChevronDown color="#db4c3f" className="h-4 w-4" />
             </Button>
             {openDropdown === "madefor" && (
-              <div className="animate-fadeIn absolute left-0 z-50 mt-2 w-64 rounded-xl bg-white py-3 shadow-lg">
+              <div className=" absolute left-0 z-50 mt-2 w-64 rounded-xl bg-white py-3 shadow-lg">
                 {madeForItems.map((item, idx) => (
                   <a
                     key={idx}
@@ -122,7 +122,7 @@ export default function Navbar() {
             onMouseLeave={() => setOpenDropdown(null)}
           >
             <Button
-              className={`flex items-center gap-1 rounded px-2 py-1 transition ${
+              className={`flex items-center gap-1 rounded px-2 py-1 text-gray-800 transition hover:text-[#EA4B2A]${
                 openDropdown === "resources" ? "bg-gray-100" : ""
               }`}
             >
@@ -130,7 +130,7 @@ export default function Navbar() {
               <ChevronDown color="#db4c3f" className="h-4 w-4" />
             </Button>
             {openDropdown === "resources" && (
-              <div className="animate-fadeIn absolute left-0 z-50 mt-2 w-72 rounded-xl bg-white py-3 shadow-lg">
+              <div className=" absolute left-0 z-50 mt-2 w-72 rounded-xl bg-white py-3 shadow-lg">
                 {resourcesItems.map((item, idx) => (
                   <a
                     key={idx}

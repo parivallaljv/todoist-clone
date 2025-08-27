@@ -1,17 +1,20 @@
-import React, { useState } from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { PRIORITY_ICON_MAP } from "../AddTask/components/PriorityPicker";
 import { LABEL_OPTIONS } from "../AddTask/config";
 import { REMINDER_ICON_MAP } from "../AddTask/components/ReminderPicker";
 import { Calendar, Flag, Clock, MapPin, Trash2 } from "react-feather";
-import { useTaskStore } from "../../store/useTaskStore";
+import { Task, useTaskStore } from "../../store/useTaskStore";
+import { DialogTitle } from "@radix-ui/react-dialog";
+import { usePathname } from "next/navigation";
 
 export function TaskDetailsModal({
-  task,
+  allTask,
   open,
   onClose,
 }: {
-  task: any;
+  allTask: any;
   open: boolean;
   onClose: () => void;
 }) {
@@ -21,12 +24,16 @@ export function TaskDetailsModal({
   const removeComment = useTaskStore((state) => state.removeComment);
   const [subTaskTitle, setSubTaskTitle] = useState("");
   const [commentText, setCommentText] = useState("");
+  const selectedTaskId = useTaskStore((s) => s.selectedTaskId);
+  const task = useTaskStore(
+    (s) => s.tasks.find((t) => t.id === s.selectedTaskId) || null,
+  );
 
   if (!task) return null;
   // Find label objects
-  const labelObjs = (task.labels || [])
-    .map((key: string) => LABEL_OPTIONS.find((l) => l.key === key))
-    .filter(Boolean);
+  const labelObj = task?.label
+    ? LABEL_OPTIONS.find((l) => l.key === task.label) || null
+    : null;
   // Priority icon
   const priorityIcon = task.priority ? (
     PRIORITY_ICON_MAP[task.priority as keyof typeof PRIORITY_ICON_MAP]
@@ -36,7 +43,7 @@ export function TaskDetailsModal({
   // Reminder (show first if multiple)
   let reminderLabel = null;
   let reminderIcon = null;
-  if (task.reminder) {
+  if (task?.reminder) {
     const opts = [
       {
         label: "Tomorrow",
@@ -53,7 +60,7 @@ export function TaskDetailsModal({
     ];
     const found = opts.find(
       (opt) =>
-        opt.date.toDateString() === new Date(task.reminder).toDateString(),
+        opt.date.toDateString() === new Date(task?.reminder).toDateString(),
     );
     if (found) {
       reminderLabel = found.label;
@@ -61,12 +68,10 @@ export function TaskDetailsModal({
         REMINDER_ICON_MAP[found.label as keyof typeof REMINDER_ICON_MAP];
     }
   }
-  // Sub-tasks and comments
-  const subTasks = task.subTasks || [];
-  const comments = task.comments || [];
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
+      <DialogTitle></DialogTitle>
       <DialogContent className="w-full max-w-2xl overflow-hidden rounded-2xl border border-[#e6e3df] bg-[#faf9f7] p-0 shadow-xl sm:max-w-4xl">
         <div className="flex h-[600px]">
           {/* Left: Task details */}
@@ -86,8 +91,8 @@ export function TaskDetailsModal({
                 Sub-tasks
               </div>
               <ul className="mb-2 flex flex-col gap-2">
-                {subTasks.length > 0 ? (
-                  subTasks.map((st: any) => (
+                {task?.subTasks ? (
+                  task?.subTasks?.map((st: any) => (
                     <li
                       key={st.id}
                       className="flex items-center gap-2 rounded bg-gray-100 px-2 py-1"
@@ -139,8 +144,8 @@ export function TaskDetailsModal({
                 Comments
               </div>
               <ul className="mb-2 flex max-h-24 flex-col gap-2 overflow-y-auto">
-                {comments.length > 0 ? (
-                  comments.map((c: any) => (
+                {task?.comments ? (
+                  task?.comments?.map((c: any) => (
                     <li
                       key={c.id}
                       className="flex items-center gap-2 rounded bg-gray-100 px-2 py-1"
@@ -226,18 +231,10 @@ export function TaskDetailsModal({
             <div>
               <div className="mb-1 text-xs text-gray-400">Labels</div>
               <div className="flex items-center gap-2 font-medium text-gray-700">
-                {labelObjs.length > 0 ? (
-                  labelObjs.map(
-                    (l: {
-                      key: string;
-                      label: string;
-                      symbol: React.ReactNode;
-                    }) => (
-                      <span key={l.key} className="flex items-center gap-1">
-                        {l.symbol} {l.label}
-                      </span>
-                    ),
-                  )
+                {labelObj ? (
+                  <span key={labelObj.key} className="flex items-center gap-1">
+                    {labelObj.symbol} {labelObj.label}
+                  </span>
                 ) : (
                   <span className="text-gray-400">—</span>
                 )}

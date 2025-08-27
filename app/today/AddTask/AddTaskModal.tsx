@@ -4,16 +4,7 @@ import { Dialog, DialogContent } from "../../components/ui/dialog";
 import { useTaskStore } from "../../store/useTaskStore";
 import "react-day-picker/dist/style.css";
 import { addDays, nextMonday, nextSaturday } from "date-fns";
-import {
-  X,
-  Inbox,
-  Calendar,
-  Clock,
-  Tag,
-  Menu,
-  Sun,
-  Monitor,
-} from "react-feather";
+import { Inbox, Calendar, Sun, Monitor } from "react-feather";
 import { DateTag } from "./components/DateTag";
 import { TitleInput } from "./components/TitleInput";
 import { DescriptionInput } from "./components/DescriptionInput";
@@ -24,8 +15,6 @@ import { ActionButtons } from "./components/ActionButtons";
 import { PRIORITY_ICON_MAP } from "./components/PriorityPicker";
 import { REMINDER_ICON_MAP } from "./components/ReminderPicker";
 import { LABEL_OPTIONS } from "./config";
-import SidebarProjects from "../SidebarProjects";
-import { projects } from "../SidebarProjects";
 import {
   FiBriefcase,
   FiHome,
@@ -61,7 +50,7 @@ export default function AddTaskModal({
   >("low");
   const [location, setLocation] = useState("");
   const [reminder, setReminder] = useState<Date | null>(null);
-  const [labels, setLabels] = useState<string[]>([]);
+  const [label, setLabel] = useState("");
   const ICON_OPTIONS = [
     { icon: <FiBriefcase color="#db4c3f" size={16} />, value: "FiBriefcase" },
     { icon: <FiHome color="#2196f3" size={16} />, value: "FiHome" },
@@ -100,11 +89,13 @@ export default function AddTaskModal({
     }),
   ];
   const [selectedTab, setSelectedTab] = useState("inbox");
+  const [selectedProjectId, setSelectedProjectId] = useState<string>("inbox");
   const [tabDropdownOpen, setTabDropdownOpen] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim()) return;
+    // Determine date-based view tab
     let computedTab = selectedTab;
     if (date) {
       const today = new Date();
@@ -125,9 +116,12 @@ export default function AddTaskModal({
       description,
       date,
       priority,
-      labels,
+      label,
       location,
       deadline,
+      subTasks: [],
+      comments: [],
+      projectId: selectedProjectId,
       tab: computedTab,
     });
     onClose();
@@ -189,16 +183,21 @@ export default function AddTaskModal({
                     </span>
                   ) : null;
                 })()}
-              {labels &&
-                labels.length > 0 &&
-                LABEL_OPTIONS.filter((l) => labels.includes(l.key)).map((l) => (
-                  <span
-                    key={l.key}
-                    className="flex items-center gap-1 rounded-full border border-gray-200 bg-white px-2 py-1 text-xs font-medium"
-                  >
-                    {l.symbol}
-                  </span>
-                ))}
+              {label &&
+                (() => {
+                  const match = LABEL_OPTIONS.find(
+                    (l: { key: string; symbol: React.ReactNode }) =>
+                      l.key === label,
+                  );
+                  return match ? (
+                    <span
+                      key={match.key}
+                      className="flex items-center gap-1 rounded-full border border-gray-200 bg-white px-2 py-1 text-xs font-medium"
+                    >
+                      {match.symbol}
+                    </span>
+                  ) : null;
+                })()}
             </div>
             <div className="relative">
               <TitleInput
@@ -216,8 +215,8 @@ export default function AddTaskModal({
                 setPriority={setPriority}
                 reminder={reminder}
                 setReminder={setReminder}
-                labels={labels}
-                setLabels={setLabels}
+                label={label}
+                setLabel={setLabel}
               />
             </div>
             <LocationInput
@@ -226,8 +225,11 @@ export default function AddTaskModal({
             />
             <TabDropdown
               TABS={TABS}
-              selectedTab={selectedTab}
-              setSelectedTab={setSelectedTab}
+              selectedTab={selectedProjectId}
+              setSelectedTab={(k: string) => {
+                setSelectedProjectId(k);
+                setSelectedTab(k);
+              }}
               tabDropdownOpen={tabDropdownOpen}
               setTabDropdownOpen={setTabDropdownOpen}
             />

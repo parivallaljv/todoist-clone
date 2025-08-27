@@ -5,7 +5,6 @@ import AddTaskModal from "./AddTask/AddTaskModal";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTaskStore } from "../store/useTaskStore";
-import type { TaskState } from "../store/useTaskStore";
 import type { Project } from "../store/useTaskStore";
 import { useSearchModal } from "../components/SearchModalContext";
 import {
@@ -17,7 +16,6 @@ import {
   Menu,
   HelpCircle,
   PlusSquare,
-  Search,
   Plus,
 } from "react-feather";
 import {
@@ -29,8 +27,6 @@ import {
   FiShoppingCart,
   FiStar,
   FiCalendar,
-  FiEdit2,
-  FiTrash2,
   FiMoreHorizontal,
 } from "react-icons/fi";
 import {
@@ -54,6 +50,8 @@ import {
 } from "@/components/ui/popover";
 import { GripVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuthStore } from "../store/useAuthStore";
+import { useRouter } from "next/navigation";
 
 export const ICON_OPTIONS = [
   {
@@ -206,26 +204,26 @@ function DraggableProject({
 }
 
 export default function Sidebar() {
-  const showAddTask = useTaskStore(
-    (state: TaskState) => state.isCreateTaskModalOpen,
-  );
+  const showAddTask = useTaskStore((state) => state.isCreateTaskModalOpen);
   const openCreateTaskModal = useTaskStore(
-    (state: TaskState) => state.openCreateTaskModal,
+    (state) => state.openCreateTaskModal,
   );
   const closeCreateTaskModal = useTaskStore(
-    (state: TaskState) => state.closeCreateTaskModal,
+    (state) => state.closeCreateTaskModal,
   );
   const pathname = usePathname();
-  const { setSearchModalOpen } = useSearchModal();
   const tasks = useTaskStore((state) => state.tasks);
   const projects = useTaskStore((state) => state.projects);
   const addProject = useTaskStore((state) => state.addProject);
   const updateProject = useTaskStore((state) => state.updateProject);
   const deleteProject = useTaskStore((state) => state.deleteProject);
   const reorderProjects = useTaskStore((state) => state.reorderProjects);
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
+  const router = useRouter();
   const [editProject, setEditProject] = useState<Project | null>(null);
   const [deleteProjectId, setDeleteProjectId] = useState<string | null>(null);
-  const [editProjectName, setEditProjectName] = useState("");
+  const [editProjectName, setEditProjectName] = useState<string>("");
   const [editSelectedIcon, setEditSelectedIcon] = useState(ICON_OPTIONS[0]);
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [projectName, setProjectName] = useState("");
@@ -260,7 +258,7 @@ export default function Sidebar() {
     setEditProject(null);
   };
 
-  // Count tasks for each tab
+  // Count tasks for date-based views
   const countByTab = (tab: string) => tasks.filter((t) => t.tab === tab).length;
 
   const handleDragEnd = (event: any) => {
@@ -273,11 +271,38 @@ export default function Sidebar() {
     }
   };
 
+  const handleLogout = () => {
+    logout();
+    router.push("/login");
+  };
+
   return (
     <aside className="flex min-h-screen w-64 flex-col border-r border-gray-200 bg-[#fcfbf7] p-4">
-      <div className="mb-6 flex items-center gap-2">
-        <div className="h-8 w-8 rounded-full bg-gray-300" />
-        <span className="font-semibold">Pari</span>
+      <div className="mb-6 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          {user?.picture ? (
+            <img
+              src={user.picture}
+              alt={user.name}
+              className="h-8 w-8 rounded-full object-cover"
+            />
+          ) : (
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-300 text-sm font-semibold text-gray-600">
+              {user?.given_name?.[0] || user?.name?.[0] || "U"}
+            </div>
+          )}
+          <span className="font-semibold">
+            {user?.given_name || user?.name || "User"}
+          </span>
+        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleLogout}
+          className="text-xs text-gray-500 hover:text-gray-700"
+        >
+          Logout
+        </Button>
       </div>
       <nav className="flex flex-col gap-1">
         <Button
@@ -331,14 +356,14 @@ export default function Sidebar() {
             style={{ textDecoration: "none" }}
           />
         </Link>
-        <Link href="/more" passHref>
-          <SidebarNavLink
-            icon={<Menu size={16} color="#db4c3f" />}
-            label="More"
-            active={pathname === "/more"}
-            style={{ textDecoration: "none" }}
-          />
-        </Link>
+        {/* <Link href="/more" passHref> */}
+        <SidebarNavLink
+          icon={<Menu size={16} color="#db4c3f" />}
+          label="More"
+          active={pathname === "/more"}
+          style={{ textDecoration: "none" }}
+        />
+        {/* </Link> */}
       </nav>
       <div className="mt-8">
         <div className="mb-2 flex items-center justify-between px-2 text-xs font-semibold text-gray-500">
@@ -368,7 +393,9 @@ export default function Sidebar() {
                   <DraggableProject
                     project={project}
                     iconObj={iconObj}
-                    taskCount={tasks.filter((t) => t.tab === project.id).length}
+                    taskCount={
+                      tasks.filter((t) => t.projectId === project.id).length
+                    }
                     setEditProject={setEditProject}
                     setEditProjectName={setEditProjectName}
                     setEditSelectedIcon={setEditSelectedIcon}

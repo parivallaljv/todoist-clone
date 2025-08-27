@@ -1,10 +1,10 @@
-import Sidebar from "./today/Sidebar";
+"use client";
+import InboxPage from "./inbox/page";
 
 export default function Home() {
   return (
-    <div className="flex">
-      <Sidebar />
-      <main className="flex-1 p-8">Home Page</main>
+    <div>
+      <InboxPage />
     </div>
   );
 }

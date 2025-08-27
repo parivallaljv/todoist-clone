@@ -3,6 +3,11 @@
 import { createContext, useContext, ReactNode } from "react";
 import { create, StoreApi, UseBoundStore } from "zustand";
 
+interface SubTask {
+  id: string;
+  title: string;
+}
+
 export interface Comment {
   id: string;
   text: string;
@@ -16,12 +21,14 @@ export interface Task {
   description?: string;
   date?: Date | null;
   priority?: "low" | "medium" | "high" | "urgent";
-  labels?: string[];
+  label?: string;
   location?: string;
   deadline?: Date | null;
+  projectId?: string;
   tab?: string;
-  subTasks?: Task[];
+  subTasks?: SubTask[];
   comments?: Comment[];
+  reminder?: Date | null;
 }
 
 export interface Project {
@@ -31,14 +38,24 @@ export interface Project {
   color?: string;
 }
 
+export interface Filter {
+  id: string;
+  name: string;
+  type: "today" | "upcoming" | "overdue" | "noDate" | "priority" | "project";
+  value?: string;
+}
+
 export interface TaskState {
   tasks: Task[];
   projects: Project[];
+  filters: Filter[];
+  selectedTaskId: string | null;
+  setSelectedTask: (id: string | null) => void;
   isCreateTaskModalOpen: boolean;
   openCreateTaskModal: () => void;
   closeCreateTaskModal: () => void;
   addTask: (task: Task) => void;
-  addSubTask: (parentId: string, subTask: Task) => void;
+  addSubTask: (parentId: string, subTask: SubTask) => void;
   removeSubTask: (parentId: string, subTaskId: string) => void;
   addComment: (taskId: string, comment: Comment) => void;
   removeComment: (taskId: string, commentId: string) => void;
@@ -46,24 +63,37 @@ export interface TaskState {
   updateProject: (project: Project) => void;
   deleteProject: (projectId: string) => void;
   reorderProjects: (newOrder: Project[]) => void;
+  addFilter: (filter: Filter) => void;
+  deleteFilter: (filterId: string) => void;
 }
 
 const defaultProjects: Project[] = [
+  { id: "inbox", name: "Inbox", emoji: "📥" },
   { id: "home", name: "Home", emoji: "🏡" },
   { id: "my-work", name: "My work", emoji: "🎯" },
   { id: "education", name: "Education", emoji: "📚" },
   { id: "goal-tracker", name: "Goal Tracker", emoji: "#" },
 ];
 
+const defaultFilters: Filter[] = [
+  { id: "flt-today", name: "Today", type: "today" },
+  { id: "flt-upcoming", name: "Upcoming", type: "upcoming" },
+  { id: "flt-overdue", name: "Overdue", type: "overdue" },
+  { id: "flt-no-date", name: "No date", type: "noDate" },
+];
+
 const store: UseBoundStore<StoreApi<TaskState>> = create<TaskState>((set) => ({
   tasks: [],
   projects: defaultProjects,
+  filters: defaultFilters,
   isCreateTaskModalOpen: false,
+  selectedTaskId: null,
+  setSelectedTask: (task) => set({ selectedTaskId: task }),
   openCreateTaskModal: () => set({ isCreateTaskModalOpen: true }),
   closeCreateTaskModal: () => set({ isCreateTaskModalOpen: false }),
   addTask: (task) =>
     set((state) => ({
-      tasks: [...state.tasks, task],
+      tasks: [...state.tasks, { ...task, subTasks: [], comments: [] }],
       isCreateTaskModalOpen: false,
     })),
   addSubTask: (parentId, subTask) =>
@@ -118,10 +148,18 @@ const store: UseBoundStore<StoreApi<TaskState>> = create<TaskState>((set) => ({
     set((state) => ({
       projects: state.projects.filter((p) => p.id !== projectId),
       tasks: state.tasks.map((t) =>
-        t.tab === projectId ? { ...t, tab: "inbox" } : t,
+        t.projectId === projectId ? { ...t, projectId: "inbox" } : t,
       ),
     })),
   reorderProjects: (newOrder) => set({ projects: newOrder }),
+  addFilter: (filter) =>
+    set((state) => ({
+      filters: [...state.filters, filter],
+    })),
+  deleteFilter: (filterId) =>
+    set((state) => ({
+      filters: state.filters.filter((f) => f.id !== filterId),
+    })),
 }));
 
 const TaskStoreContext = createContext<UseBoundStore<

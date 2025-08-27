@@ -1,27 +1,27 @@
-import React from 'react';
+import React from "react";
 
 const testimonials = [
   {
-    quote: 'Simple, straightforward, and super powerful',
-    source: 'THE VERGE',
+    quote: "Simple, straightforward, and super powerful",
+    source: "THE VERGE",
   },
   {
-    quote: 'The best to-do list app on the market',
-    source: 'PC MAG',
+    quote: "The best to-do list app on the market",
+    source: "PC MAG",
   },
   {
-    quote: 'Nothing short of stellar',
-    source: 'techradar',
+    quote: "Nothing short of stellar",
+    source: "techradar",
   },
 ];
 
 export default function Testimonials() {
   return (
-    <section className="py-16 px-4 md:px-24 bg-gradient-to-b from-white to-green-50 animate-slideIn">
-      <div className="flex flex-col md:flex-row justify-center items-center gap-12">
+    <section className="animate-slideIn bg-gradient-to-b from-white to-green-50 px-4 py-16 md:px-24">
+      <div className="flex flex-col items-center justify-center gap-12 md:flex-row">
         {testimonials.map((t, i) => (
-          <div key={i} className="text-center max-w-xs">
-            <p className="italic text-xl mb-2">“{t.quote}”</p>
+          <div key={i} className="max-w-xs text-center">
+            <p className="mb-2 text-xl italic">“{t.quote}”</p>
             <span className="font-bold text-gray-700">{t.source}</span>
           </div>
         ))}
@@ -29,7 +29,3 @@ export default function Testimonials() {
     </section>
   );
 }
-
-// Tailwind animation (add to globals.css or tailwind config if not present):
-// @keyframes slideIn { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
-// .animate-slideIn { animation: slideIn 1s ease; } 

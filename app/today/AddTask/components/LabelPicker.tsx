@@ -4,11 +4,11 @@ import { Briefcase, Home, ShoppingCart, Tag, User } from "react-feather";
 import { LABEL_OPTIONS } from "../config";
 
 export default function LabelPicker({
-  labels,
-  setLabels,
+  label,
+  setLabel,
 }: {
-  labels: string[];
-  setLabels: (l: string[]) => void;
+  label: string;
+  setLabel: (l: string) => void;
 }) {
   const [showDropdown, setShowDropdown] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -29,26 +29,21 @@ export default function LabelPicker({
     };
   }, [showDropdown]);
 
-  const handleSelect = (key: string) => {
-    if (labels.includes(key)) {
-      setLabels(labels.filter((l) => l !== key));
-    } else {
-      setLabels([...labels, key]);
-    }
-  };
-
-  const selectedLabel =
-    labels.length > 0 ? LABEL_OPTIONS.find((l) => l.key === labels[0]) : null;
+  const selectedLabel = label
+    ? LABEL_OPTIONS.find((l) => l.key === label)
+    : null;
 
   return (
     <div className="relative inline-block" ref={ref}>
       <Button
         type="button"
-        className={`"border-[#db4c3f] text-[#db4c3f]" flex items-center gap-1 rounded-full border hover:bg-[#fbeee6] px-3 py-1 text-xs font-medium shadow-none`}
+        className={`"border-[#db4c3f] text-[#db4c3f]" flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-medium shadow-none hover:bg-[#fbeee6]`}
         onClick={() => setShowDropdown((prev) => !prev)}
       >
         {selectedLabel ? (
-          <>{selectedLabel.symbol}</>
+          <>
+            {selectedLabel.symbol} {selectedLabel.label}
+          </>
         ) : (
           <>
             <Tag size={14} color={"#db4c3f"} /> Label
@@ -61,8 +56,8 @@ export default function LabelPicker({
             <Button
               key={opt.key}
               type="button"
-              className={`cal-overlay-icon justify-start rounded-full border border-gray-200 bg-white px-2 py-1 text-xs font-medium text-gray-700 hover:border-[#db4c3f] hover:bg-[#db4c3f] hover:text-white ${labels.includes(opt.key) ? "bg-[#fbeee6] text-[#db4c3f]" : ""}`}
-              onClick={() => handleSelect(opt.key)}
+              className={`cal-overlay-icon justify-start rounded-full border border-gray-200 bg-white px-2 py-1 text-xs font-medium text-gray-700 hover:border-[#db4c3f] hover:bg-[#db4c3f] hover:text-white ${label.includes(opt.key) ? "bg-[#fbeee6] text-[#db4c3f]" : ""}`}
+              onClick={() => setLabel(opt.key)}
             >
               {opt.symbol} {opt.label}
             </Button>

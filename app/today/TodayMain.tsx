@@ -18,7 +18,7 @@ export default function TodayMain() {
   const closeCreateTaskModal = useTaskStore(
     (state: TaskState) => state.closeCreateTaskModal,
   );
-  const [selectedTask, setSelectedTask] = useState<any>(null);
+  const setSelectedTask = useTaskStore((state) => state.setSelectedTask);
   const [showTaskModal, setShowTaskModal] = useState(false);
   return (
     <div className="mx-auto mt-10 flex w-full max-w-3xl flex-col items-center justify-center">
@@ -46,7 +46,7 @@ export default function TodayMain() {
               key={task.id}
               className="flex cursor-pointer items-center justify-between rounded-lg bg-white p-4 shadow"
               onClick={() => {
-                setSelectedTask(task);
+                setSelectedTask(task?.id);
                 setShowTaskModal(true);
               }}
             >
@@ -64,7 +64,7 @@ export default function TodayMain() {
         </div>
       )}
       <TaskDetailsModal
-        task={selectedTask}
+        allTask={tasks}
         open={showTaskModal}
         onClose={() => setShowTaskModal(false)}
       />
