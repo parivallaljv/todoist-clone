@@ -14,18 +14,17 @@ const eslintConfig = [
   {
     plugins: ["unused-imports"],
     rules: {
-      // Error on all unused variables, but allow unused args if they start with _
-      "no-unused-vars": [
+      "no-unused-vars": "error",
+      "unused-imports/no-unused-imports": "error",
+      "@typescript-eslint/no-unused-vars": [
         "error",
         {
-          args: "after-used",
-          argsIgnorePattern: "^_",
           vars: "all",
-          varsIgnorePattern: "^_",
+          args: "after-used",
+          ignoreRestSiblings: true,
+          argsIgnorePattern: "^_",
         },
       ],
-      // Error on unused imports
-      "unused-imports/no-unused-imports": "error",
     },
   },
 ];
