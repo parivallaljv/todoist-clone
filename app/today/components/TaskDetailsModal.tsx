@@ -59,9 +59,14 @@ export function TaskDetailsModal({
       },
     ];
     const found = opts.find(
-      (opt) =>
-        opt.date.toDateString() === new Date(task?.reminder).toDateString(),
-    );
+      (opt) => {
+        if (typeof task?.reminder === "string") {
+          return opt.date.toDateString() === new Date(task.reminder).toDateString();
+        }
+        return opt.date.toDateString() === task?.reminder?.toDateString();
+      });
+
+
     if (found) {
       reminderLabel = found.label;
       reminderIcon =
@@ -224,7 +229,7 @@ export function TaskDetailsModal({
                 {priorityIcon}{" "}
                 {task.priority
                   ? task.priority.charAt(0).toUpperCase() +
-                    task.priority.slice(1)
+                  task.priority.slice(1)
                   : "—"}
               </div>
             </div>
