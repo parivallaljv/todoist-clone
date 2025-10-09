@@ -10,7 +10,6 @@ import {
   ChevronDown,
 } from "react-feather";
 import { useRouter } from "next/navigation";
-// import { useRouter } from "next/router";
 
 // const madeForItems = [
 //   {

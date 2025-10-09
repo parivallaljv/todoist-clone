@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { PRIORITY_ICON_MAP } from "../AddTask/components/PriorityPicker";
 import { LABEL_OPTIONS } from "../AddTask/config";
@@ -7,14 +7,24 @@ import { REMINDER_ICON_MAP } from "../AddTask/components/ReminderPicker";
 import { Calendar, Flag, Clock, MapPin, Trash2 } from "react-feather";
 import { Task, useTaskStore } from "../../store/useTaskStore";
 import { DialogTitle } from "@radix-ui/react-dialog";
-import { usePathname } from "next/navigation";
+
+interface SubTask {
+  id: string;
+  title: string;
+}
+
+interface Comment {
+  id: string;
+  text: string;
+  author: string;
+  date: Date;
+}
 
 export function TaskDetailsModal({
-  allTask,
   open,
   onClose,
 }: {
-  allTask: any;
+  allTask: Task[];
   open: boolean;
   onClose: () => void;
 }) {
@@ -24,7 +34,6 @@ export function TaskDetailsModal({
   const removeComment = useTaskStore((state) => state.removeComment);
   const [subTaskTitle, setSubTaskTitle] = useState("");
   const [commentText, setCommentText] = useState("");
-  const selectedTaskId = useTaskStore((s) => s.selectedTaskId);
   const task = useTaskStore(
     (s) => s.tasks.find((t) => t.id === s.selectedTaskId) || null,
   );
@@ -61,16 +70,16 @@ export function TaskDetailsModal({
     const found = opts.find(
       (opt) => {
         if (typeof task?.reminder === "string") {
-          return opt.date.toDateString() === new Date(task.reminder).toDateString();
+          return opt?.date?.toDateString() === new Date(task?.reminder).toDateString();
         }
-        return opt.date.toDateString() === task?.reminder?.toDateString();
+        return opt?.date?.toDateString() === task?.reminder?.toDateString();
       });
 
 
     if (found) {
       reminderLabel = found.label;
       reminderIcon =
-        REMINDER_ICON_MAP[found.label as keyof typeof REMINDER_ICON_MAP];
+        REMINDER_ICON_MAP[found?.label as keyof typeof REMINDER_ICON_MAP];
     }
   }
 
@@ -97,7 +106,7 @@ export function TaskDetailsModal({
               </div>
               <ul className="mb-2 flex flex-col gap-2">
                 {task?.subTasks ? (
-                  task?.subTasks?.map((st: any) => (
+                  task?.subTasks?.map((st: SubTask) => (
                     <li
                       key={st.id}
                       className="flex items-center gap-2 rounded bg-gray-100 px-2 py-1"
@@ -150,7 +159,7 @@ export function TaskDetailsModal({
               </div>
               <ul className="mb-2 flex max-h-24 flex-col gap-2 overflow-y-auto">
                 {task?.comments ? (
-                  task?.comments?.map((c: any) => (
+                  task?.comments?.map((c: Comment) => (
                     <li
                       key={c.id}
                       className="flex items-center gap-2 rounded bg-gray-100 px-2 py-1"
