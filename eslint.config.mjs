@@ -10,6 +10,7 @@ const __dirname = dirname(__filename);
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
+  recommendedConfig: typeScriptEsLintPlugin.configs['recommended'],
 });
 // Convert Next.js configs and ensure plugins are in flat config format
 const nextConfigs = compat.extends("next/core-web-vitals", "next/typescript");
