@@ -79,11 +79,11 @@ export const useAppleAuth = () => {
     });
   };
 
-  const appleLogin = async (): Promise<UserData> => {
+  const appleLogin = async (): Promise<void> => {
     try {
       await initializeAppleSDK();
 
-      return new Promise<UserData>((resolve, reject) => {
+      return new Promise<void>((resolve, reject) => {
         if (!window.AppleID) {
           reject(new Error("Apple SDK not loaded"));
           return;
@@ -110,7 +110,7 @@ export const useAppleAuth = () => {
 
               login(userData, authorization.code);
               router.push("/today");
-              resolve(userData);
+              resolve();
             } else {
               reject(new Error("Apple login failed"));
             }

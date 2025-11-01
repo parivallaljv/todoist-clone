@@ -95,11 +95,11 @@ export const useFacebookAuth = () => {
     });
   };
 
-  const facebookLogin = async () => {
+  const facebookLogin = async (): Promise<void> => {
     try {
       await initializeFacebookSDK();
 
-      return new Promise((resolve, reject) => {
+      return new Promise<void>((resolve, reject) => {
         if (!window.FB) {
           reject(new Error("Facebook SDK not loaded"));
           return;
@@ -130,7 +130,7 @@ export const useFacebookAuth = () => {
 
                     login(user, accessToken);
                     router.push("/today");
-                    resolve(user);
+                    resolve();
                   } else {
                     console.error("Facebook API error:", userInfo?.error);
                     reject(new Error("Failed to fetch user info"));

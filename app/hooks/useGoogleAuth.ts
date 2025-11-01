@@ -2,10 +2,6 @@ import { useGoogleLogin, TokenResponse } from "@react-oauth/google";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "../store/useAuthStore";
 
-interface GoogleLoginSuccessResponse {
-  success: boolean;
-}
-
 export const useGoogleAuth = () => {
   const router = useRouter();
   const { fetchGoogleUserInfo, login } = useAuthStore();
@@ -30,13 +26,13 @@ export const useGoogleAuth = () => {
     },
   });
 
-  const handleGoogleLogin = async (): Promise<GoogleLoginSuccessResponse> => {
+  const handleGoogleLogin = async (): Promise<void> => {
     return new Promise((resolve, reject) => {
       try {
         googleLogin();
         // Note: This is a simplified approach. In a real implementation,
         // you'd want to handle the async nature of the OAuth flow properly
-        resolve({ success: true });
+        resolve();
       } catch (error) {
         reject(error);
       }
