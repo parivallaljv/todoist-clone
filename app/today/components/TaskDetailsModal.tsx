@@ -67,10 +67,10 @@ export function TaskDetailsModal({
         date: new Date(new Date().setDate(new Date().getDate() + 30)),
       },
     ];
-    const found = opts.find(
+    const found = opts?.find(
       (opt) => {
         if (typeof task?.reminder === "string") {
-          return opt?.date?.toDateString() === new Date(task?.reminder).toDateString();
+          return opt?.date?.toDateString() === new Date(task?.reminder)?.toDateString();
         }
         return opt?.date?.toDateString() === task?.reminder?.toDateString();
       });
@@ -88,7 +88,6 @@ export function TaskDetailsModal({
       <DialogTitle></DialogTitle>
       <DialogContent className="w-full max-w-2xl overflow-hidden rounded-2xl border border-[#e6e3df] bg-[#faf9f7] p-0 shadow-xl sm:max-w-4xl">
         <div className="flex h-[600px]">
-          {/* Left: Task details */}
           <div className="flex w-2xs flex-1 flex-col p-10">
             <div className="mb-6 flex items-center gap-2">
               <span className="text-sm font-medium text-gray-400">Inbox</span>
@@ -99,7 +98,6 @@ export function TaskDetailsModal({
             <div className="mb-6 text-gray-400">
               {task.description || <span className="italic">Description</span>}
             </div>
-            {/* Sub-tasks */}
             <div className="mb-4">
               <div className="mb-2 text-xs font-semibold text-gray-500">
                 Sub-tasks
@@ -152,7 +150,6 @@ export function TaskDetailsModal({
                 </button>
               </form>
             </div>
-            {/* Comments */}
             <div className="mt-auto flex flex-col gap-2">
               <div className="mb-1 text-xs font-semibold text-gray-500">
                 Comments
@@ -208,7 +205,6 @@ export function TaskDetailsModal({
               </form>
             </div>
           </div>
-          {/* Right: Meta info */}
           <div className="flex w-[220px] flex-col gap-6 border-l border-[#e6e3df] bg-[#f7f5f3] p-8">
             <div>
               <div className="mb-1 text-xs text-gray-400">Project</div>
