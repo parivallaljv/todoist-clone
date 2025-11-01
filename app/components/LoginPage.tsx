@@ -30,21 +30,16 @@ export default function LoginPage() {
           <h1 className="mb-6 w-full text-3xl font-bold text-gray-900">
             Log in
           </h1>
-
           <SocialLoginButtons
             onGoogleLogin={googleLogin}
             onFacebookLogin={facebookLogin}
             onAppleLogin={appleLogin}
             isLoading={isLoading}
           />
-
           <div className="my-6 w-full max-w-md border-t border-gray-200"></div>
-
           <LoginForm onSubmit={handleEmailLogin} />
-
           <AuthFooter type="login" onForgotPassword={handleForgotPassword} />
         </div>
-
         <div className="hidden w-1/2 md:block">
           <Image
             src={LoginImage}
