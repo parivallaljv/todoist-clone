@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Clock, Calendar, Sun, Calendar as CalendarIcon } from "react-feather";
+import { Clock, Sun, Calendar as CalendarIcon } from "react-feather";
 import { addDays } from "date-fns";
 
 const REMINDER_OPTIONS = [

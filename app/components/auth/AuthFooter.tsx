@@ -12,7 +12,6 @@ export default function AuthFooter({
   onForgotPassword,
 }: AuthFooterProps) {
   const isLogin = type === "login";
-  const oppositeType = isLogin ? "signup" : "login";
   const oppositeText = isLogin
     ? "Don't have an account?"
     : "Already signed up?";
@@ -34,7 +33,7 @@ export default function AuthFooter({
 
       <div className="mt-2 flex w-full max-w-md flex-col items-start">
         <p className="text-xs text-gray-500">
-          By continuing with Google, Apple, or Email, you agree to Todoist's{" "}
+          By continuing with Google, Apple, or Email, you agree to Todoist&apos;s{" "}
           <a href="#" className="text-[#db4c3f] underline">
             Terms of Service
           </a>{" "}

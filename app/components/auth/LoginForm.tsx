@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 
 interface LoginFormProps {
-  onSubmit?: (email: string, password: string) => void;
+  onSubmit?(_email: string, _password: string): void;
 }
 
 export default function LoginForm({ onSubmit }: LoginFormProps) {
@@ -22,6 +22,8 @@ export default function LoginForm({ onSubmit }: LoginFormProps) {
       onSubmit(email, password);
     } else {
       // Default behavior - redirect to today page
+      // Note: In a real app, you'd validate credentials here
+      console.log("Login attempt:", { email, password });
       router.push("/today");
     }
   };

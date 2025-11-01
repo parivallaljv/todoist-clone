@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Briefcase, Home, ShoppingCart, Tag, User } from "react-feather";
+import { Tag } from "react-feather";
 import { LABEL_OPTIONS } from "../config";
 
 export default function LabelPicker({

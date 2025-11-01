@@ -46,22 +46,26 @@ export const getInitials = (user: User): string => {
   }
   return user.name
     ? user.name
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .toUpperCase()
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
     : user.email[0].toUpperCase();
 };
 
 export const isTokenExpired = (token: string): boolean => {
-  try {
-    // Google OAuth tokens don't have a standard expiration time in the token itself
-    // We'll use a conservative approach and assume tokens expire after 1 hour
-    // In a real app, you'd want to implement proper token refresh logic
-    return false; // For now, we'll let the API calls fail naturally
-  } catch (error) {
+  // Google OAuth tokens don't have a standard expiration time in the token itself
+  // We'll use a conservative approach and assume tokens expire after 1 hour
+  // In a real app, you'd want to implement proper token refresh logic
+
+  // Basic validation: if token is missing or empty, consider it expired
+  if (!token || token.trim().length === 0) {
     return true;
   }
+
+  // For now, we'll let the API calls fail naturally
+  // TODO: Implement proper token expiration checking
+  return false;
 };
 
 export const clearAuthData = (): void => {

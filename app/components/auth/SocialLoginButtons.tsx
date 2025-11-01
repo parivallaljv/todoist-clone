@@ -1,29 +1,28 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import GoogleIcon from "../../icons/Google";
 import { MdOutlineFacebook } from "react-icons/md";
-import AppleLogo from "../../icons/AppleLogo";
 
 interface SocialLoginButtonsProps {
-  onGoogleLogin: () => Promise<any>;
-  onFacebookLogin?: () => Promise<any>;
-  onAppleLogin?: () => Promise<any>;
+  onGoogleLogin: () => Promise<void>;
+  onFacebookLogin?: () => Promise<void>;
+  onAppleLogin?: () => Promise<void>;
   isLoading?: boolean;
 }
 
 export default function SocialLoginButtons({
   onGoogleLogin,
   onFacebookLogin,
-  onAppleLogin,
+  // onAppleLogin,
   isLoading = false,
 }: SocialLoginButtonsProps) {
   const [loadingProvider, setLoadingProvider] = useState<string | null>(null);
 
   const handleLogin = async (
     provider: string,
-    loginFunction: () => Promise<any>,
+    loginFunction: () => Promise<void>,
   ) => {
     if (isLoading || loadingProvider) return;
 

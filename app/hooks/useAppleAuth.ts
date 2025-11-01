@@ -2,10 +2,46 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "../store/useAuthStore";
 import { OAUTH_CONFIG } from "../config/oauth";
 
+interface AppleFullName {
+  givenName?: string;
+  familyName?: string;
+}
+
+interface AppleAuthorizationWithName {
+  email: string;
+  code: string;
+  fullName?: AppleFullName;
+}
+
+interface AppleAuthResponseWithName {
+  authorization: AppleAuthorizationWithName;
+  user?: string;
+}
+
 declare global {
   interface Window {
-    AppleID: any;
+    AppleID?: {
+      init: (_config: {
+        clientId: string;
+        scope: string;
+        redirectURI: string;
+        state: string;
+        usePopup: boolean;
+      }) => void;
+      auth: {
+        signIn: () => Promise<AppleAuthResponseWithName>;
+      };
+    };
   }
+}
+
+interface UserData {
+  id: string;
+  email: string;
+  name: string;
+  picture?: string;
+  given_name: string;
+  family_name: string;
 }
 
 export const useAppleAuth = () => {
@@ -27,13 +63,15 @@ export const useAppleAuth = () => {
       script.defer = true;
 
       script.onload = () => {
-        window.AppleID.init({
-          clientId: OAUTH_CONFIG.APPLE.CLIENT_ID,
-          scope: OAUTH_CONFIG.APPLE.SCOPES.join(" "),
-          redirectURI: OAUTH_CONFIG.APPLE.REDIRECT_URI,
-          state: "origin:web",
-          usePopup: true,
-        });
+        if (window.AppleID) {
+          window.AppleID.init({
+            clientId: OAUTH_CONFIG.APPLE.CLIENT_ID,
+            scope: OAUTH_CONFIG.APPLE.SCOPES.join(" "),
+            redirectURI: OAUTH_CONFIG.APPLE.REDIRECT_URI,
+            state: "origin:web",
+            usePopup: true,
+          });
+        }
         resolve();
       };
 
@@ -41,20 +79,25 @@ export const useAppleAuth = () => {
     });
   };
 
-  const appleLogin = async () => {
+  const appleLogin = async (): Promise<UserData> => {
     try {
       await initializeAppleSDK();
 
-      return new Promise((resolve, reject) => {
+      return new Promise<UserData>((resolve, reject) => {
+        if (!window.AppleID) {
+          reject(new Error("Apple SDK not loaded"));
+          return;
+        }
+
         window.AppleID.auth
           .signIn()
-          .then((response: any) => {
+          .then((response) => {
             if (response.authorization) {
               // User successfully logged in
               const { authorization, user } = response;
 
               // Create user object from Apple response
-              const userData = {
+              const userData: UserData = {
                 id: user || `apple_${Date.now()}`, // Apple doesn't always provide user ID
                 email: authorization.email || "",
                 name: authorization.fullName
@@ -72,7 +115,7 @@ export const useAppleAuth = () => {
               reject(new Error("Apple login failed"));
             }
           })
-          .catch((error: any) => {
+          .catch((error: unknown) => {
             console.error("Apple login error:", error);
             reject(error);
           });

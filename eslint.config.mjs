@@ -17,7 +17,13 @@ const eslintConfig = [
       "unused-imports": unusedImports,
     },
     rules: {
-      "no-unused-vars": "error",
+      "no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        },
+      ],
       "unused-imports/no-unused-imports": "error",
       "unused-imports/no-unused-vars": [
         "warn",
@@ -32,6 +38,7 @@ const eslintConfig = [
         "error",
         {
           vars: "all",
+          varsIgnorePattern: "^_",
           args: "after-used",
           ignoreRestSiblings: true,
           argsIgnorePattern: "^_",

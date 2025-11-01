@@ -6,9 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTaskStore } from "../store/useTaskStore";
 import type { Project } from "../store/useTaskStore";
-import { useSearchModal } from "../components/SearchModalContext";
 import {
-  Search as SearchIcon,
   Inbox,
   Calendar,
   Clock,
