@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 
 interface LoginFormProps {
-  onSubmit?(_email: string, _password: string): void;
+  onSubmit?(email: string, password: string): void;
 }
 
 export default function LoginForm({ onSubmit }: LoginFormProps) {
