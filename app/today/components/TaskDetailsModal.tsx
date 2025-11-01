@@ -69,10 +69,14 @@ export function TaskDetailsModal({
     ];
     const found = opts?.find(
       (opt) => {
-        if (typeof task?.reminder === "string") {
-          return opt?.date?.toDateString() === new Date(task?.reminder)?.toDateString();
+        if (!task?.reminder) return false;
+        if (typeof task.reminder === "string") {
+          return opt?.date?.toDateString() === new Date(task.reminder).toDateString();
         }
-        return opt?.date?.toDateString() === task?.reminder?.toDateString();
+        if (task.reminder instanceof Date) {
+          return opt?.date?.toDateString() === task.reminder.toDateString();
+        }
+        return false;
       });
 
 
