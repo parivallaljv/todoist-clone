@@ -1,5 +1,19 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, Dispatch, SetStateAction } from "react";
 import { Button } from "@/components/ui/button";
+
+interface Tab {
+  key: string;
+  label: string;
+  icon: React.ReactNode;
+}
+
+interface TabDropdownProps {
+  TABS: Tab[];
+  selectedTab: string;
+  setSelectedTab: (_key: string) => void;
+  tabDropdownOpen: boolean;
+  setTabDropdownOpen: Dispatch<SetStateAction<boolean>>;
+}
 
 export function TabDropdown({
   TABS,
@@ -7,7 +21,7 @@ export function TabDropdown({
   setSelectedTab,
   tabDropdownOpen,
   setTabDropdownOpen,
-}: any) {
+}: TabDropdownProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -33,20 +47,19 @@ export function TabDropdown({
         className="flex w-full items-center justify-start rounded-full border border-gray-200 bg-white px-3 py-1 text-xs font-medium text-gray-700 shadow-none"
         onClick={() => setTabDropdownOpen((v: boolean) => !v)}
       >
-        <span>{TABS.find((t: any) => t.key === selectedTab)?.icon}</span>
+        <span>{TABS.find((t) => t.key === selectedTab)?.icon}</span>
         <span className="ml-1">
-          {TABS.find((t: any) => t.key === selectedTab)?.label}
+          {TABS.find((t) => t.key === selectedTab)?.label}
         </span>
       </Button>
       {tabDropdownOpen && (
         <div className="absolute top-[110%] left-0 z-10 min-w-[120px] rounded-xl border bg-white shadow">
-          {TABS.map((tab: any) => (
+          {TABS.map((tab) => (
             <Button
               key={tab.key}
               type="button"
-              className={`cal-overlay-icon flex w-full items-center justify-start gap-2 border-gray-200 bg-white px-3 py-2 text-left text-xs text-gray-700 hover:border-[#db4c3f] hover:bg-[#db4c3f] hover:text-white ${
-                selectedTab === tab.key ? "bg-gray-100 font-semibold" : ""
-              }`}
+              className={`cal-overlay-icon flex w-full items-center justify-start gap-2 border-gray-200 bg-white px-3 py-2 text-left text-xs text-gray-700 hover:border-[#db4c3f] hover:bg-[#db4c3f] hover:text-white ${selectedTab === tab.key ? "bg-gray-100 font-semibold" : ""
+                }`}
               onClick={() => {
                 setSelectedTab(tab.key);
                 setTabDropdownOpen(false);

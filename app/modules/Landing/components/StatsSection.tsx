@@ -28,11 +28,14 @@ function useCountUp(target: number, duration = 1200) {
 }
 
 export default function StatsSection() {
-  const counts = stats.map(s => useCountUp(s.value));
+  const count1 = useCountUp(stats[0].value);
+  const count2 = useCountUp(stats[1].value);
+  const count3 = useCountUp(stats[2].value);
+  const counts = [count1, count2, count3];
   return (
     <section className="py-16 px-4 md:px-24 bg-white text-center animate-fadeIn">
       <h2 className="text-4xl font-bold mb-2">A task manager you can trust for life</h2>
-      <p className="text-lg text-gray-600 mb-8">We've been building Todoist for 18 years and 152 days. Rest assured that we'll never sell out to the highest bidder.</p>
+      <p className="text-lg text-gray-600 mb-8">We&apos;ve been building Todoist for 18 years and 152 days. Rest assured that we&apos;ll never sell out to the highest bidder.</p>
       <div className="flex flex-col md:flex-row justify-center items-center gap-12 mt-8">
         {stats.map((s, i) => (
           <div key={i} className="flex flex-col items-center">
@@ -44,7 +47,3 @@ export default function StatsSection() {
     </section>
   );
 }
-
-// Tailwind animation (add to globals.css or tailwind config if not present):
-// @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-// .animate-fadeIn { animation: fadeIn 1s ease-in; } 

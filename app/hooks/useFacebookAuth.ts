@@ -2,9 +2,62 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "../store/useAuthStore";
 import { OAUTH_CONFIG } from "../config/oauth";
 
+interface FacebookAuthResponse {
+  accessToken: string;
+  expiresIn: number;
+  signedRequest: string;
+  userID: string;
+}
+
+interface FacebookLoginResponse {
+  authResponse?: FacebookAuthResponse;
+  status?: string;
+}
+
+interface FacebookPictureData {
+  url: string;
+  width: number;
+  height: number;
+  is_silhouette: boolean;
+}
+
+interface FacebookPicture {
+  data: FacebookPictureData;
+}
+
+interface FacebookUserInfo {
+  id: string;
+  name: string;
+  email?: string;
+  picture?: FacebookPicture;
+  error?: {
+    message: string;
+    type: string;
+    code: number;
+  };
+}
+
+interface FacebookSDK {
+  init: (config: {
+    appId: string;
+    cookie: boolean;
+    xfbml: boolean;
+    version: string;
+  }) => void;
+  login: (
+    _callback: (response: FacebookLoginResponse) => void,
+    _options?: { scope: string },
+  ) => void;
+  api: (
+    _path: string,
+    _params: { fields: string },
+    _callback: (response: FacebookUserInfo) => void,
+  ) => void;
+}
+
 declare global {
   interface Window {
-    FB: any;
+    FB?: FacebookSDK;
   }
 }
 
@@ -27,12 +80,14 @@ export const useFacebookAuth = () => {
       script.crossOrigin = "anonymous";
 
       script.onload = () => {
-        window.FB.init({
-          appId: OAUTH_CONFIG.FACEBOOK.APP_ID,
-          cookie: true,
-          xfbml: true,
-          version: OAUTH_CONFIG.FACEBOOK.VERSION,
-        });
+        if (window.FB) {
+          window.FB.init({
+            appId: OAUTH_CONFIG.FACEBOOK.APP_ID,
+            cookie: true,
+            xfbml: true,
+            version: OAUTH_CONFIG.FACEBOOK.VERSION,
+          });
+        }
         resolve();
       };
 
@@ -45,17 +100,23 @@ export const useFacebookAuth = () => {
       await initializeFacebookSDK();
 
       return new Promise((resolve, reject) => {
-        window.FB.login(
-          (response: any) => {
+        if (!window.FB) {
+          reject(new Error("Facebook SDK not loaded"));
+          return;
+        }
+
+        const fbSDK = window.FB;
+        fbSDK.login(
+          (response: FacebookLoginResponse) => {
             if (response.authResponse) {
               // User successfully logged in
               const accessToken = response.authResponse.accessToken;
 
               // Get user info - email is automatically included with public_profile
-              window.FB.api(
+              fbSDK.api(
                 "/me",
                 { fields: "id,name,email,picture" },
-                (userInfo: any) => {
+                (userInfo: FacebookUserInfo) => {
                   if (userInfo && !userInfo.error) {
                     const user = {
                       id: userInfo.id,

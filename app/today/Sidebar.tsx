@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import SidebarNavLink from "./SidebarNavLink";
 import AddTaskModal from "./AddTask/AddTaskModal";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useTaskStore } from "../store/useTaskStore";
 import type { Project } from "../store/useTaskStore";
@@ -33,7 +34,7 @@ import {
   MdSchool,
   MdFolderOpen,
 } from "react-icons/md";
-import { DndContext, closestCenter } from "@dnd-kit/core";
+import { DndContext, closestCenter, DragEndEvent } from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
@@ -51,7 +52,13 @@ import { Button } from "@/components/ui/button";
 import { useAuthStore } from "../store/useAuthStore";
 import { useRouter } from "next/navigation";
 
-export const ICON_OPTIONS = [
+export interface IconOption {
+  icon: React.ReactNode;
+  value: string;
+  color: string;
+}
+
+export const ICON_OPTIONS: IconOption[] = [
   {
     icon: <FiBriefcase color="#db4c3f" size={20} />,
     value: "FiBriefcase",
@@ -117,7 +124,6 @@ export const ICON_OPTIONS = [
 function DraggableProject({
   project,
   iconObj,
-  index,
   taskCount,
   setEditProject,
   setEditProjectName,
@@ -125,12 +131,11 @@ function DraggableProject({
   setDeleteProjectId,
 }: {
   project: Project;
-  iconObj: any;
-  index?: number;
+  iconObj: IconOption;
   taskCount: number;
-  setEditProject: (p: Project | null) => void;
-  setEditProjectName: (s: string) => void;
-  setEditSelectedIcon: (icon: any) => void;
+  setEditProject: (project: Project | null) => void;
+  setEditProjectName: (name: string) => void;
+  setEditSelectedIcon: (icon: IconOption) => void;
   setDeleteProjectId: (id: string) => void;
 }) {
   const {
@@ -259,11 +264,11 @@ export default function Sidebar() {
   // Count tasks for date-based views
   const countByTab = (tab: string) => tasks.filter((t) => t.tab === tab).length;
 
-  const handleDragEnd = (event: any) => {
+  const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    if (active.id !== over.id) {
-      const oldIndex = projectOrder.indexOf(active.id);
-      const newIndex = projectOrder.indexOf(over.id);
+    if (over && active.id !== over.id) {
+      const oldIndex = projectOrder.indexOf(active.id as string);
+      const newIndex = projectOrder.indexOf(over.id as string);
       const newOrder = arrayMove(projects, oldIndex, newIndex);
       reorderProjects(newOrder);
     }
@@ -279,9 +284,11 @@ export default function Sidebar() {
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-2">
           {user?.picture ? (
-            <img
+            <Image
               src={user.picture}
               alt={user.name}
+              width={32}
+              height={32}
               className="h-8 w-8 rounded-full object-cover"
             />
           ) : (

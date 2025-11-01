@@ -26,7 +26,7 @@ function UpcomingMain() {
       <div className="mb-8 flex w-full items-center justify-between">
         <div>
           <h2 className="mb-1 text-2xl font-bold text-gray-900">Upcoming</h2>
-          <div className="text-sm text-gray-500">See what's next</div>
+          <div className="text-sm text-gray-500">See what&apos;s next</div>
         </div>
         <Button
           className="hover:none flex items-center gap-1 bg-amber-50 text-base font-medium text-[#db4c3f] hover:bg-amber-50"

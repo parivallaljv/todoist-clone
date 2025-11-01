@@ -13,7 +13,7 @@ export default function CaptureSection() {
           Capture tasks at the speed of thought
         </h3>
         <p className="text-lg text-gray-600 mb-6">
-          We've spent over a decade refining Todoist to be an extension of your
+          We&apos;ve spent over a decade refining Todoist to be an extension of your
           mind. Capture and organize tasks instantly using easy-flowing, natural
           language.
         </p>
@@ -26,7 +26,3 @@ export default function CaptureSection() {
     </section>
   );
 }
-
-// Tailwind animation (add to globals.css or tailwind config if not present):
-// @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
-// .animate-fadeInUp { animation: fadeInUp 1s ease; }

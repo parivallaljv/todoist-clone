@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { Dialog, DialogContent } from "../../components/ui/dialog";
 import { useTaskStore } from "../../store/useTaskStore";
 import "react-day-picker/dist/style.css";
-import { addDays, nextMonday, nextSaturday } from "date-fns";
-import { Inbox, Calendar, Sun, Monitor } from "react-feather";
+import { addDays } from "date-fns";
+import { Inbox } from "react-feather";
 import { DateTag } from "./components/DateTag";
 import { TitleInput } from "./components/TitleInput";
 import { DescriptionInput } from "./components/DescriptionInput";
@@ -44,10 +44,8 @@ export default function AddTaskModal({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState<Date | null>(null);
-  const [deadline, setDeadline] = useState<Date | null>(null);
-  const [priority, setPriority] = useState<
-    "low" | "medium" | "high" | "urgent"
-  >("low");
+  const [deadline] = useState<Date | null>(null);
+  const [priority, setPriority] = useState<"low" | "medium" | "high" | "urgent">("low");
   const [location, setLocation] = useState("");
   const [reminder, setReminder] = useState<Date | null>(null);
   const [label, setLabel] = useState("");
@@ -127,29 +125,6 @@ export default function AddTaskModal({
     onClose();
   };
 
-  const quickSelects = [
-    {
-      label: "Today",
-      date: new Date(),
-      icon: <Calendar size={14} color="#db4c3f" />,
-    },
-    {
-      label: "Tomorrow",
-      date: addDays(new Date(), 1),
-      icon: <Sun size={14} color="#db4c3f" />,
-    },
-    {
-      label: "Next week",
-      date: nextMonday(new Date()),
-      icon: <Calendar size={14} color="#db4c3f" />,
-    },
-    {
-      label: "Next weekend",
-      date: nextSaturday(new Date()),
-      icon: <Monitor size={14} color="#db4c3f" />,
-    },
-  ];
-
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="w-[450px] max-w-full overflow-visible rounded-2xl border border-gray-100 p-0 shadow-2xl">
@@ -160,7 +135,7 @@ export default function AddTaskModal({
               {date && <DateTag date={date} onClear={() => setDate(null)} />}
               {priority && (
                 <span className="flex items-center gap-1 rounded-full border border-gray-200 bg-white px-2 py-1 text-xs font-medium">
-                  {PRIORITY_ICON_MAP[priority]}
+                  {PRIORITY_ICON_MAP[priority as keyof typeof PRIORITY_ICON_MAP]}
                 </span>
               )}
               {reminder &&
@@ -177,7 +152,7 @@ export default function AddTaskModal({
                     <span className="flex items-center gap-1 rounded-full border border-gray-200 bg-white px-2 py-1 text-xs font-medium">
                       {
                         REMINDER_ICON_MAP[
-                          opt.label as keyof typeof REMINDER_ICON_MAP
+                        opt.label as keyof typeof REMINDER_ICON_MAP
                         ]
                       }
                     </span>

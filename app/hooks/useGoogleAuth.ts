@@ -1,6 +1,10 @@
-import { useGoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin, TokenResponse } from "@react-oauth/google";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "../store/useAuthStore";
+
+interface GoogleLoginSuccessResponse {
+  success: boolean;
+}
 
 export const useGoogleAuth = () => {
   const router = useRouter();
@@ -8,7 +12,7 @@ export const useGoogleAuth = () => {
 
   const googleLogin = useGoogleLogin({
     flow: "implicit",
-    onSuccess: async (codeResponse: any) => {
+    onSuccess: async (codeResponse: TokenResponse) => {
       if (codeResponse?.access_token) {
         try {
           const user = await fetchGoogleUserInfo(codeResponse.access_token);
@@ -26,7 +30,7 @@ export const useGoogleAuth = () => {
     },
   });
 
-  const handleGoogleLogin = async (): Promise<any> => {
+  const handleGoogleLogin = async (): Promise<GoogleLoginSuccessResponse> => {
     return new Promise((resolve, reject) => {
       try {
         googleLogin();

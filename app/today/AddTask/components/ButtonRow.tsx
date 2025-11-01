@@ -4,7 +4,18 @@ import PriorityPicker from "./PriorityPicker";
 import ReminderPicker from "./ReminderPicker";
 import LabelPicker from "./LabelPicker";
 
-export function ButtonRow(props: any) {
+interface ButtonRowProps {
+  date: Date | null;
+  setDate: (_date: Date | null) => void;
+  priority: "low" | "medium" | "high" | "urgent";
+  setPriority: (_priority: "low" | "medium" | "high" | "urgent") => void;
+  reminder: Date | null;
+  setReminder: (_reminder: Date | null) => void;
+  label: string;
+  setLabel: (_label: string) => void;
+}
+
+export function ButtonRow(props: ButtonRowProps) {
   const {
     date,
     setDate,

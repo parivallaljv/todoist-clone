@@ -109,11 +109,11 @@ const store: UseBoundStore<StoreApi<TaskState>> = create<TaskState>((set) => ({
       tasks: state.tasks.map((task) =>
         task.id === parentId
           ? {
-              ...task,
-              subTasks: (task.subTasks || []).filter(
-                (st) => st.id !== subTaskId,
-              ),
-            }
+            ...task,
+            subTasks: (task.subTasks || []).filter(
+              (st) => st.id !== subTaskId,
+            ),
+          }
           : task,
       ),
     })),
@@ -130,9 +130,9 @@ const store: UseBoundStore<StoreApi<TaskState>> = create<TaskState>((set) => ({
       tasks: state.tasks.map((task) =>
         task.id === taskId
           ? {
-              ...task,
-              comments: (task.comments || []).filter((c) => c.id !== commentId),
-            }
+            ...task,
+            comments: (task.comments || []).filter((c) => c.id !== commentId),
+          }
           : task,
       ),
     })),

@@ -28,8 +28,8 @@ export default function PriorityPicker({
   priority,
   setPriority,
 }: {
-  priority: string;
-  setPriority: (p: string) => void;
+  priority: "low" | "medium" | "high" | "urgent";
+  setPriority: (p: "low" | "medium" | "high" | "urgent") => void;
 }) {
   const [showDropdown, setShowDropdown] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -54,11 +54,10 @@ export default function PriorityPicker({
     <div className="relative inline-block" ref={ref}>
       <Button
         type="button"
-        className={`flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-medium shadow-none hover:bg-[#fbeee6] ${
-          showDropdown
-            ? "border-[#db4c3f] bg-[#fbeee6] text-[#db4c3f]"
-            : "border-gray-200 bg-white text-gray-700"
-        }`}
+        className={`flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-medium shadow-none hover:bg-[#fbeee6] ${showDropdown
+          ? "border-[#db4c3f] bg-[#fbeee6] text-[#db4c3f]"
+          : "border-gray-200 bg-white text-gray-700"
+          }`}
         onClick={() => setShowDropdown((prev) => !prev)}
       >
         {PRIORITY_OPTIONS.find((opt) => opt.key === priority)?.icon}
@@ -75,7 +74,7 @@ export default function PriorityPicker({
               type="button"
               className="cal-overlay-icon justify-start gap-3 rounded-full border border-gray-200 bg-white px-3 py-1 text-left text-xs font-medium text-gray-700 hover:border-[#db4c3f] hover:bg-[#db4c3f] hover:text-white"
               onClick={() => {
-                setPriority(opt.key);
+                setPriority(opt.key as "low" | "medium" | "high" | "urgent");
                 setShowDropdown(false);
               }}
             >
