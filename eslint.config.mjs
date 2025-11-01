@@ -11,9 +11,17 @@ const __dirname = dirname(__filename);
 const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
+// Convert Next.js configs and ensure plugins are in flat config format
+const nextConfigs = compat.extends("next/core-web-vitals", "next/typescript");
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  ...nextConfigs.map((config) => {
+    // Remove plugins if they're in eslintrc format (array)
+    if (config.plugins && Array.isArray(config.plugins)) {
+      delete config.plugins;
+    }
+    return config;
+  }),
 
   {
     files: ["**/*.ts", "**/*.tsx"],
@@ -28,10 +36,8 @@ const eslintConfig = [
       "unused-imports": unusedImports,
       "@typescript-eslint": tseslint,
     },
-
     rules: {
       "no-unused-vars": "off",
-
       "@typescript-eslint/no-unused-vars": [
         "warn",
         {
@@ -43,7 +49,6 @@ const eslintConfig = [
           caughtErrors: "none",
         },
       ],
-
       "unused-imports/no-unused-imports": "error",
       "unused-imports/no-unused-vars": [
         "warn",
@@ -52,15 +57,6 @@ const eslintConfig = [
           varsIgnorePattern: "^_",
           args: "after-used",
           argsIgnorePattern: "^_",
-        },
-      ],
-      "@typescript-eslint/no-unused-vars-experimental": "off",
-      "@typescript-eslint/no-unused-vars": [
-        "warn",
-        {
-          vars: "all",
-          args: "none",
-          ignoreRestSiblings: true,
         },
       ],
     },
